@@ -5,6 +5,8 @@
 // Includes
 // ---------------------------------------------------------------------------
 
+#include <SFML/Graphics.hpp>
+
 #include <string>
 #include <ostream>
 
@@ -48,7 +50,17 @@ enum class Texture_id {
     DEFAULT,
 
     // Backgrounds
-    BACKGROUND__MOUNTAINS
+    BACKGROUND__MOUNTAINS,
+
+    // Background Boxes
+    BACKGROUND_BOX__03A,
+
+    // Title banners
+    TITLE_BANNER__MEDIUM_02C,
+
+    // Cursors
+    CURSOR__GAUNTLET,
+    CURSOR__GAUNTLET_MAGIC
 };
 inline std::ostream& operator<<(std::ostream& os, Texture_id const texture_id) {
 
@@ -57,6 +69,10 @@ inline std::ostream& operator<<(std::ostream& os, Texture_id const texture_id) {
         case Texture_id::DEFAULT: return os << "DEFAULT";
 
         case Texture_id::BACKGROUND__MOUNTAINS: return os << "BACKGROUND__MOUNTAINS";
+        case Texture_id::BACKGROUND_BOX__03A: return os << "BACKGROUND_BOX__03A";
+        case Texture_id::TITLE_BANNER__MEDIUM_02C: return os << "TITLE_BANNER__MEDIUM_02C";
+        case Texture_id::CURSOR__GAUNTLET: return os << "CURSOR__GAUNTLET";
+        case Texture_id::CURSOR__GAUNTLET_MAGIC: return os << "CURSOR__GAUNTLET_MAGIC";
 
         default: return os << "UNKNOW_TEXTURE_ID";
     }
@@ -86,7 +102,15 @@ inline std::string const FILEPATH__TEXTURE__DEFAULT_TEXTURE = "assets/textures/D
 // Backgrounds
 inline std::string const FILEPATH__TEXTURE__BACKGROUNDS__MOUNTAINS = "assets/textures/background/mountains.png";
 
-// Background
+// Background boxes
+inline std::string const FILEPATH__TEXTURE__BACKGROUND_BOX__03A = "assets/textures/UI/Background boxes/BGbox_03A.png";
+
+// Title banners
+inline std::string const FILEPATH__TEXTURE__TITLE_BANNER__MEDIUM_02C = "assets/textures/UI/Title banners/BannerMedium_02C.png";
+
+// Cursors
+inline std::string const FILEPATH__TEXTURE__CURSOR__GAUNTLET = "assets/textures/UI/Cursors/Gauntlet.png";
+inline std::string const FILEPATH__TEXTURE__CURSOR__GAUNTLET_MAGIC = "assets/textures/UI/Cursors/Gauntlet_Magic.png";
 
 } // namespace mirelight::assets
 

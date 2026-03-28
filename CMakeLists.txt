@@ -45,6 +45,17 @@ target_include_directories(Mirelight PUBLIC
     $<INSTALL_INTERFACE:include>
 )
 
+# -----------------------
+# Third party
+# -----------------------
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/third_party")
+    target_include_directories(Mirelight SYSTEM PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/third_party
+    )
+else()
+    message(WARNING "third_party folder not found")
+endif()
+
 target_compile_features(Mirelight PRIVATE cxx_std_20)
 
 target_link_libraries(Mirelight PRIVATE SFML::Graphics SFML::Window SFML::System SFML::Audio SFML::Network)
@@ -53,4 +64,10 @@ if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/assets")
     file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/assets" DESTINATION "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
 else()
     message(WARNING "assets folder not found")
+endif()
+
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/data")
+    file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/data" DESTINATION "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
+else()
+    message(WARNING "data folder not found")
 endif()

@@ -42,6 +42,10 @@ void Asset_manager::init() {
         // Textures
         if (success) { success = _load_texture(Texture_id::DEFAULT, FILEPATH__TEXTURE__DEFAULT_TEXTURE); }
         if (success) { success = _load_texture(Texture_id::BACKGROUND__MOUNTAINS, FILEPATH__TEXTURE__BACKGROUNDS__MOUNTAINS); }
+        if (success) { success = _load_texture(Texture_id::BACKGROUND_BOX__03A, FILEPATH__TEXTURE__BACKGROUND_BOX__03A); }
+        if (success) { success = _load_texture(Texture_id::TITLE_BANNER__MEDIUM_02C, FILEPATH__TEXTURE__TITLE_BANNER__MEDIUM_02C); }
+        if (success) { success = _load_texture(Texture_id::CURSOR__GAUNTLET, FILEPATH__TEXTURE__CURSOR__GAUNTLET); }
+        if (success) { success = _load_texture(Texture_id::CURSOR__GAUNTLET_MAGIC, FILEPATH__TEXTURE__CURSOR__GAUNTLET_MAGIC); }
     }
 
     // Check if Asset_manager is initialized successfully
