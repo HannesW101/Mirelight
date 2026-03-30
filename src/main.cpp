@@ -21,24 +21,16 @@ using namespace mirelight::cursors;
 using namespace mirelight::events;
 
 // ===========================================================================
-// Get singletons
-// ---------------------------------------------------------------------------
-
-Asset_manager& asset_manager = Asset_manager::get_instance();
-Setting_manager& setting_manager = Setting_manager::get_instance();
-Event_handler& event_handler = Event_handler::get_instance();
-
-// ===========================================================================
 // Functions
 // ---------------------------------------------------------------------------
 int main() {
 
-    asset_manager.init();
+    Asset_manager::get_instance().init();
 
     sf::ContextSettings ctx_settings;
     ctx_settings.antiAliasingLevel = 8u;
 
-    Settings settings = setting_manager.get_settings();
+    Settings settings = Setting_manager::get_instance().get_settings();
 
     sf::RenderWindow window(
         sf::VideoMode({
@@ -70,12 +62,7 @@ int main() {
 
         while (std::optional<sf::Event> const event = window.pollEvent()) {
 
-            if (auto key_press = event->getIf<sf::Event::KeyReleased>()) { // TODO: Remove
-
-                if (key_press->code == sf::Keyboard::Key::Escape) { window.close(); }
-            }
-
-            event_handler.handle_events(event);
+            Event_handler::get_instance().handle_events(event);
         }
 
         menu_manager.update(dt);

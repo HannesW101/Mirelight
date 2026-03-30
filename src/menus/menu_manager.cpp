@@ -41,12 +41,17 @@ void Menu_manager::change_menu(Menu_id const menu_id) {
 
         case Menu_id::MAIN: { _curr_menu = new Menu_main(_window); _curr_menu_id = menu_id; break; }
 
-        default: LOG(WARNING) << "Could not change menu, unknown menu ID [" << menu_id << ']';
+        default: LOG(ERROR) << "Could not change menu, unknown menu ID [" << menu_id << ']';
     }
 }
 
 // ---------------------------------------------------------------------------
 void Menu_manager::draw() {
+
+    if (auto const& new_menu = _curr_menu->check_for_menu_change()) {
+
+        change_menu(new_menu.value());
+    }
 
     if (_curr_menu == nullptr) {
 

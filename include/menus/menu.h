@@ -10,6 +10,8 @@
 
 #include <SFML/Graphics.hpp>
 
+#include <optional>
+
 // ===========================================================================
 // Namespaces
 // ---------------------------------------------------------------------------
@@ -34,11 +36,14 @@ public:
 
     void update(float const dt) { _acc_dt += dt; }
 
+    std::optional<Menu_id> check_for_menu_change() const { return _pending_menu_change; }
+
 protected:
     Menu(sf::RenderWindow* window)
         : _window(window)
         , _view()
         , _acc_dt(0.0f)
+        , _pending_menu_change(std::nullopt)
         {
 
         _window->setView(_view);
@@ -48,6 +53,8 @@ protected:
     sf::View          _view;
 
     float _acc_dt;
+
+    std::optional<Menu_id> _pending_menu_change;
 };
 
 } // namespace mirelight::menus

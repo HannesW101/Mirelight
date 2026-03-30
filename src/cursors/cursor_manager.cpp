@@ -22,14 +22,6 @@ using namespace mirelight::settings;
 using namespace mirelight::events;
 
 // ===========================================================================
-// Get singletons
-// ---------------------------------------------------------------------------
-
-Asset_manager& asset_manager = Asset_manager::get_instance();
-Setting_manager& setting_manager = Setting_manager::get_instance();
-Event_handler& event_handler = Event_handler::get_instance();
-
-// ===========================================================================
 // Class Cursor_manager
 // ---------------------------------------------------------------------------
 
@@ -49,7 +41,7 @@ void Cursor_manager::change_cursor(assets::Texture_id const cursor_id) {
     } else {
 
         _curr_cursor_id = cursor_id;
-        _curr_cursor->setTexture(asset_manager.get(cursor_id));
+        _curr_cursor->setTexture(Asset_manager::get_instance().get(cursor_id));
     }
 }
 
@@ -83,13 +75,13 @@ Cursor_manager::Cursor_manager(sf::RenderWindow* window)
 // ---------------------------------------------------------------------------
 void Cursor_manager::_create_curr_cursor() {
 
-    Settings const settings = setting_manager.get_settings();
+    Settings const settings = Setting_manager::get_instance().get_settings();
 
-    _curr_cursor = new sf::Sprite(asset_manager.get(_curr_cursor_id));
+    _curr_cursor = new sf::Sprite(Asset_manager::get_instance().get(_curr_cursor_id));
 
     _curr_cursor->setScale({
-        settings.window_width  * 0.002f,
-        settings.window_height * 0.002f
+        settings.window_width  * 0.001f,
+        settings.window_height * 0.001f
         });
 
     sf::Vector2u const tex_size = _curr_cursor->getTexture().getSize();
