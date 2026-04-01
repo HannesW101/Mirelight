@@ -1,11 +1,12 @@
-#ifndef UI_UI_BUTTON
-#define UI_UI_BUTTON
+#ifndef UI_LABEL
+#define UI_LABEL
 
 // ===========================================================================
 // Includes
 // ---------------------------------------------------------------------------
 
 #include "assets/asset_defs.h"
+#include "ui/widget.h"
 
 #include <SFML/Graphics.hpp>
 
@@ -18,43 +19,38 @@
 namespace mirelight::ui {
 
 // ===========================================================================
-// Class UI_button
+// Class Label
 // ---------------------------------------------------------------------------
 
-class UI_button final {
+class Label final : public Widget {
 
 public:
-    UI_button(std::string const& id_string, sf::RenderWindow* window);
+    Label(Widget_type const widget_type, sf::RenderWindow* window);
+    ~Label();
 
-    ~UI_button();
+    void draw() override;
 
-    void draw();
-
-    sf::Sprite* get_sprite();
-    sf::Text* get_text();
-
-    bool contains(sf::Vector2f const& point) const;
-    bool is_hovered() const;
-
-    void set_hover_sfx(assets::Sfx_id const sfx_id);
     void set_normal_texture(assets::Texture_id const texture);
-    void set_hover_texture(assets::Texture_id const texture);
     void set_text_font(assets::Font_id const font_id);
+    void set_scale(sf::Vector2f const& scale);
+    void set_text(std::string const& text);
+    void set_char_size(unsigned int const size);
+    void set_text_color(sf::Color const& color);
+    void set_sprite_position(sf::Vector2f const& pos);
+    void set_text_position(sf::Vector2f const& pos);
+    void set_text_border(sf::Color const& color, float const thickness);
+
+    unsigned int get_char_size() const;
+    sf::FloatRect get_sprite_global_bounds() const;
+    sf::FloatRect get_text_global_bounds() const;
 
 private:
-    void _update();
-
-    std::string _id_string;
-    sf::RenderWindow* _window;
+    void _update() override;
 
     sf::Sprite* _sprite;
     sf::Text* _text;
 
-    assets::Sfx_id _hover_sfx;
     assets::Texture_id _normal_texture;
-    assets::Texture_id _hover_texture;
-
-    bool _is_hovered;
 };
 
 } // namespace mirelight::ui

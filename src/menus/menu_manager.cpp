@@ -5,6 +5,7 @@
 #include "menus/menu_manager.h"
 #include "utils/logger.h"
 #include "menus/menu_main.h"
+#include "menus/menu_settings.h"
 
 // ===========================================================================
 // Namespaces
@@ -40,6 +41,7 @@ void Menu_manager::change_menu(Menu_id const menu_id) {
     switch (menu_id) {
 
         case Menu_id::MAIN: { _curr_menu = new Menu_main(_window); _curr_menu_id = menu_id; break; }
+        case Menu_id::SETTINGS: { _curr_menu = new Menu_settings(_window); _curr_menu_id = menu_id; break; }
 
         default: LOG(ERROR) << "Could not change menu, unknown menu ID [" << menu_id << ']';
     }
@@ -48,18 +50,19 @@ void Menu_manager::change_menu(Menu_id const menu_id) {
 // ---------------------------------------------------------------------------
 void Menu_manager::draw() {
 
-    if (auto const& new_menu = _curr_menu->check_for_menu_change()) {
-
-        change_menu(new_menu.value());
-    }
-
     if (_curr_menu == nullptr) {
 
         LOG(ERROR) << "Cannot draw menu, nullptr";
-    } else {
-
-        _curr_menu->draw();
+        return;
     }
+
+    if (auto const& new_menu = _curr_menu->check_for_menu_change()) {
+
+        change_menu(new_menu.value());
+        _window->clear();
+    }
+
+    _curr_menu->draw();
 }
 
 // ---------------------------------------------------------------------------

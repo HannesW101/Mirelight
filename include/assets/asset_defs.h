@@ -57,6 +57,7 @@ enum class Texture_id {
 
     // Title banners
     TITLE_BANNER__MEDIUM_02C,
+    TITLE_BANNER__MEDIUM_01C,
 
     // Cursors
     CURSOR__GAUNTLET,
@@ -163,6 +164,7 @@ inline std::string const FILEPATH__TEXTURE__BACKGROUND_BOX__03A = "assets/textur
 
 // Title banners
 inline std::string const FILEPATH__TEXTURE__TITLE_BANNER__MEDIUM_02C = "assets/textures/UI/Title banners/BannerMedium_02C.png";
+inline std::string const FILEPATH__TEXTURE__TITLE_BANNER__MEDIUM_01C = "assets/textures/UI/Title banners/BannerMedium_01C.png";
 
 // Cursors
 inline std::string const FILEPATH__TEXTURE__CURSOR__GAUNTLET = "assets/textures/UI/Cursors/Gauntlet.png";

@@ -48,6 +48,7 @@ void Asset_manager::init() {
         if (success) { success = _load_texture(Texture_id::CURSOR__GAUNTLET_MAGIC, FILEPATH__TEXTURE__CURSOR__GAUNTLET_MAGIC); }
         if (success) { success = _load_texture(Texture_id::BUTTON__03A_NORMAL, FILEPATH__TEXTURE__BUTTON__03A_NORMAL); }
         if (success) { success = _load_texture(Texture_id::BUTTON__03A_SELECTED, FILEPATH__TEXTURE__BUTTON__03A_SELECTED); }
+        if (success) { success = _load_texture(Texture_id::TITLE_BANNER__MEDIUM_01C, FILEPATH__TEXTURE__TITLE_BANNER__MEDIUM_01C); }
 
         // Music
         if (success) { success = _load_music(Music_id::AMBIENT_1,  FILEPATH__MUSIC__AMBIENT_1);  }

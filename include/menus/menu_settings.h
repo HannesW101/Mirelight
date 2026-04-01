@@ -1,13 +1,12 @@
-#ifndef MENUS_MENU_MAIN
-#define MENUS_MENU_MAIN
+#ifndef MENUS_MENU_SETTINGS
+#define MENUS_MENU_SETTINGS
 
 // ===========================================================================
 // Includes
 // ---------------------------------------------------------------------------
 
 #include "menus/menu.h"
-#include "events/event_user.h"
-#include "ui/button.h"
+#include "ui/label.h"
 
 // ===========================================================================
 // Namespaces
@@ -16,33 +15,32 @@
 namespace mirelight::menus {
 
 // ===========================================================================
-// Class Menu_main
+// Class Menu_settings
 // ---------------------------------------------------------------------------
 
-class Menu_main final
+class Menu_settings final
     : public Menu
     {
 
 public:
-    Menu_main(sf::RenderWindow* window);
-    ~Menu_main();
+    Menu_settings(sf::RenderWindow* window);
+    ~Menu_settings();
 
     void draw() override;
 
-    Menu_main           (Menu_main const&) = delete;
-    Menu_main& operator=(Menu_main const&) = delete;
-    Menu_main           (Menu_main&&     ) = delete;
-    Menu_main& operator=(Menu_main&&     ) = delete;
+    Menu_settings           (Menu_settings const&) = delete;
+    Menu_settings& operator=(Menu_settings const&) = delete;
+    Menu_settings           (Menu_settings&&     ) = delete;
+    Menu_settings& operator=(Menu_settings&&     ) = delete;
 
 private:
     void _create_backgrounds();
     void _create_background_box();
-    void _create_title_banner();
-    void _create_title_text();
-    void _create_btn_new_game();
-    void _create_btn_continue();
-    void _create_btn_settings();
-    void _create_btn_exit();
+    void _create_label_resolution();
+    void _create_label_vsync();
+    void _create_label_fps_limit();
+    void _create_label_music_volume();
+    void _create_label_sfx_volume();
 
     void _setup_view();
     void _update_moving_background();
@@ -53,14 +51,11 @@ private:
     float       _background_moving_delta;
 
     sf::Sprite* _background_box;
-
-    sf::Sprite* _title_banner;
-    sf::Text*   _title_text;
-
-    ui::Button* _btn_new_game;
-    ui::Button* _btn_continue;
-    ui::Button* _btn_settings;
-    ui::Button* _btn_exit;
+    ui::Label*  _label_resolution;
+    ui::Label*  _label_vsync;
+    ui::Label*  _label_fps_limit;
+    ui::Label*  _label_music_volume;
+    ui::Label*  _label_sfx_volume;
 };
 
 } // namespace mirelight::menus

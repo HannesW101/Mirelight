@@ -7,8 +7,8 @@
 #include "settings/setting_manager.h"
 #include "utils/colors.h"
 #include "events/event_handler.h"
-#include "cursors/cursor_manager.h"
 #include "sounds/sound_manager.h"
+#include "cursors/cursor_manager.h"
 
 // ===========================================================================
 // Namespaces
@@ -24,9 +24,9 @@ using namespace mirelight::assets;
 using namespace mirelight::settings;
 using namespace mirelight::utils;
 using namespace mirelight::events;
-using namespace mirelight::cursors;
 using namespace mirelight::sounds;
 using namespace mirelight::ui;
+using namespace mirelight::cursors;
 
 // ===========================================================================
 // Class Menu_main
@@ -58,9 +58,11 @@ Menu_main::Menu_main(sf::RenderWindow* window)
 
     _setup_view();
 
-    _register_events();
+    _update_following_ui_elements();
+    _update_moving_background();
 
     Sound_manager::get_instance().play_music(Music_id::AMBIENT_1);
+    Cursor_manager::get_instance(_window).change_cursor(Texture_id::CURSOR__GAUNTLET);
 }
 
 // ---------------------------------------------------------------------------
@@ -75,9 +77,6 @@ Menu_main::~Menu_main() {
     if (_btn_continue  != nullptr) { delete _btn_continue;  }
     if (_btn_settings  != nullptr) { delete _btn_settings;  }
     if (_btn_exit  != nullptr) { delete _btn_exit;  }
-
-    Event_handler::get_instance().deregister_event(_get_caller_id());
-    Sound_manager::get_instance().stop_music(Music_id::AMBIENT_1);
 }
 
 // ---------------------------------------------------------------------------
@@ -194,25 +193,28 @@ void Menu_main::_create_btn_new_game() {
 
     if (_btn_new_game == nullptr) {
 
-        _btn_new_game = new UI_button("_btn_new_game", _window);
+        _btn_new_game = new Button(Widget_type::TEXT_BUTTON, _window);
 
         _btn_new_game->set_normal_texture(Texture_id::BUTTON__03A_NORMAL);
         _btn_new_game->set_hover_texture(Texture_id::BUTTON__03A_SELECTED);
+        _btn_new_game->set_normal_cursor(Texture_id::CURSOR__GAUNTLET);
+        _btn_new_game->set_hover_cursor(Texture_id::CURSOR__GAUNTLET_MAGIC);
+        _btn_new_game->set_hover_sfx(Sfx_id::AFRICAN_1);
+        _btn_new_game->set_on_click_sfx(Sfx_id::AFRICAN_3);
         _btn_new_game->set_text_font(Font_id::TITLE);
-        _btn_new_game->get_sprite()->setScale({
+        _btn_new_game->set_scale({
             settings.window_width * 0.002f,
             settings.window_height * 0.002f
             });
-
-        _btn_new_game->get_text()->setString("NEW GAME");
-        _btn_new_game->get_text()->setCharacterSize({
+        _btn_new_game->set_text("NEW GAME");
+        _btn_new_game->set_char_size({
             static_cast<unsigned int>(settings.window_width * 0.030f)
             });
-        _btn_new_game->get_text()->setFillColor(sf::Color::White);
-        _btn_new_game->get_text()->setOutlineColor(COLOR__BANNER_BORDER);
-        _btn_new_game->get_text()->setOutlineThickness({
-            _btn_new_game->get_text()->getCharacterSize() * 0.1f
-            });
+        _btn_new_game->set_text_color(sf::Color::White);
+        _btn_new_game->set_text_border(
+            COLOR__BANNER_BORDER,
+            _btn_new_game->get_char_size() * 0.1f
+            );
     }
 }
 
@@ -223,25 +225,28 @@ void Menu_main::_create_btn_continue() {
 
     if (_btn_continue == nullptr) {
 
-        _btn_continue = new UI_button("_btn_continue", _window);
+        _btn_continue = new Button(Widget_type::TEXT_BUTTON, _window);
 
         _btn_continue->set_normal_texture(Texture_id::BUTTON__03A_NORMAL);
         _btn_continue->set_hover_texture(Texture_id::BUTTON__03A_SELECTED);
+        _btn_continue->set_normal_cursor(Texture_id::CURSOR__GAUNTLET);
+        _btn_continue->set_hover_cursor(Texture_id::CURSOR__GAUNTLET_MAGIC);
+        _btn_continue->set_hover_sfx(Sfx_id::AFRICAN_1);
+        _btn_continue->set_on_click_sfx(Sfx_id::AFRICAN_3);
         _btn_continue->set_text_font(Font_id::TITLE);
-        _btn_continue->get_sprite()->setScale({
+        _btn_continue->set_scale({
             settings.window_width * 0.002f,
             settings.window_height * 0.002f
             });
-
-        _btn_continue->get_text()->setString("CONTINUE");
-        _btn_continue->get_text()->setCharacterSize({
+        _btn_continue->set_text("CONTINUE");
+        _btn_continue->set_char_size({
             static_cast<unsigned int>(settings.window_width * 0.030f)
             });
-        _btn_continue->get_text()->setFillColor(sf::Color::White);
-        _btn_continue->get_text()->setOutlineColor(COLOR__BANNER_BORDER);
-        _btn_continue->get_text()->setOutlineThickness({
-            _btn_continue->get_text()->getCharacterSize() * 0.1f
-            });
+        _btn_continue->set_text_color(sf::Color::White);
+        _btn_continue->set_text_border(
+            COLOR__BANNER_BORDER,
+            _btn_continue->get_char_size() * 0.1f
+            );
     }
 }
 
@@ -252,25 +257,32 @@ void Menu_main::_create_btn_settings() {
 
     if (_btn_settings == nullptr) {
 
-        _btn_settings = new UI_button("_btn_settings", _window);
+        _btn_settings = new Button(Widget_type::TEXT_BUTTON, _window);
 
         _btn_settings->set_normal_texture(Texture_id::BUTTON__03A_NORMAL);
         _btn_settings->set_hover_texture(Texture_id::BUTTON__03A_SELECTED);
+        _btn_settings->set_normal_cursor(Texture_id::CURSOR__GAUNTLET);
+        _btn_settings->set_hover_cursor(Texture_id::CURSOR__GAUNTLET_MAGIC);
+        _btn_settings->set_hover_sfx(Sfx_id::AFRICAN_1);
+        _btn_settings->set_on_click_sfx(Sfx_id::AFRICAN_3);
         _btn_settings->set_text_font(Font_id::TITLE);
-        _btn_settings->get_sprite()->setScale({
+        _btn_settings->set_scale({
             settings.window_width * 0.002f,
             settings.window_height * 0.002f
             });
-
-        _btn_settings->get_text()->setString("SETTINGS");
-        _btn_settings->get_text()->setCharacterSize({
+        _btn_settings->set_text("SETTINGS");
+        _btn_settings->set_char_size({
             static_cast<unsigned int>(settings.window_width * 0.030f)
             });
-        _btn_settings->get_text()->setFillColor(sf::Color::White);
-        _btn_settings->get_text()->setOutlineColor(COLOR__BANNER_BORDER);
-        _btn_settings->get_text()->setOutlineThickness({
-            _btn_settings->get_text()->getCharacterSize() * 0.1f
-            });
+        _btn_settings->set_text_color(sf::Color::White);
+        _btn_settings->set_text_border(
+            COLOR__BANNER_BORDER,
+            _btn_settings->get_char_size() * 0.1f
+            );
+        _btn_settings->on_click([this](){
+
+            _pending_menu_change = Menu_id::SETTINGS;
+        });
     }
 }
 
@@ -281,25 +293,32 @@ void Menu_main::_create_btn_exit() {
 
     if (_btn_exit == nullptr) {
 
-        _btn_exit = new UI_button("_btn_exit", _window);
+        _btn_exit = new Button(Widget_type::TEXT_BUTTON, _window);
 
         _btn_exit->set_normal_texture(Texture_id::BUTTON__03A_NORMAL);
         _btn_exit->set_hover_texture(Texture_id::BUTTON__03A_SELECTED);
+        _btn_exit->set_normal_cursor(Texture_id::CURSOR__GAUNTLET);
+        _btn_exit->set_hover_cursor(Texture_id::CURSOR__GAUNTLET_MAGIC);
+        _btn_exit->set_hover_sfx(Sfx_id::AFRICAN_1);
+        _btn_exit->set_on_click_sfx(Sfx_id::AFRICAN_3);
         _btn_exit->set_text_font(Font_id::TITLE);
-        _btn_exit->get_sprite()->setScale({
+        _btn_exit->set_scale({
             settings.window_width * 0.002f,
             settings.window_height * 0.002f
             });
-
-        _btn_exit->get_text()->setString("EXIT");
-        _btn_exit->get_text()->setCharacterSize({
+        _btn_exit->set_text("EXIT");
+        _btn_exit->set_char_size({
             static_cast<unsigned int>(settings.window_width * 0.030f)
             });
-        _btn_exit->get_text()->setFillColor(sf::Color::White);
-        _btn_exit->get_text()->setOutlineColor(COLOR__BANNER_BORDER);
-        _btn_exit->get_text()->setOutlineThickness({
-            _btn_exit->get_text()->getCharacterSize() * 0.1f
-            });
+        _btn_exit->set_text_color(sf::Color::White);
+        _btn_exit->set_text_border(
+            COLOR__BANNER_BORDER,
+            _btn_exit->get_char_size() * 0.1f
+            );
+        _btn_exit->on_click([this](){
+
+            _window->close();
+        });
     }
 }
 
@@ -365,14 +384,14 @@ void Menu_main::_update_following_ui_elements() {
     sf::Vector2f const background_box_size = _background_box->getGlobalBounds().size;
     sf::Vector2f const title_banner_size = _title_banner->getGlobalBounds().size;
     sf::Vector2f const title_text_size = _title_text->getGlobalBounds().size;
-    sf::Vector2f const btn_new_game_size = _btn_new_game->get_sprite()->getGlobalBounds().size;
-    sf::Vector2f const btn_continue_size = _btn_continue->get_sprite()->getGlobalBounds().size;
-    sf::Vector2f const btn_settings_size = _btn_settings->get_sprite()->getGlobalBounds().size;
-    sf::Vector2f const btn_exit_size = _btn_exit->get_sprite()->getGlobalBounds().size;
-    sf::Vector2f const new_game_text_size = _btn_new_game->get_text()->getGlobalBounds().size;
-    sf::Vector2f const continue_text_size = _btn_continue->get_text()->getGlobalBounds().size;
-    sf::Vector2f const settings_text_size = _btn_settings->get_text()->getGlobalBounds().size;
-    sf::Vector2f const exit_text_size = _btn_exit->get_text()->getGlobalBounds().size;
+    sf::Vector2f const btn_new_game_size = _btn_new_game->get_sprite_global_bounds().size;
+    sf::Vector2f const btn_continue_size = _btn_continue->get_sprite_global_bounds().size;
+    sf::Vector2f const btn_settings_size = _btn_settings->get_sprite_global_bounds().size;
+    sf::Vector2f const btn_exit_size = _btn_exit->get_sprite_global_bounds().size;
+    sf::Vector2f const new_game_text_size = _btn_new_game->get_text_global_bounds().size;
+    sf::Vector2f const continue_text_size = _btn_continue->get_text_global_bounds().size;
+    sf::Vector2f const settings_text_size = _btn_settings->get_text_global_bounds().size;
+    sf::Vector2f const exit_text_size = _btn_exit->get_text_global_bounds().size;
 
     _background_box->setPosition({
         view_center.x - (background_box_size.x / 2.0f),
@@ -389,115 +408,45 @@ void Menu_main::_update_following_ui_elements() {
         view_center.y - (title_text_size.y / 2.0f) - settings.window_height * 0.39f
         });
 
-    _btn_new_game->get_sprite()->setPosition({
+    _btn_new_game->set_sprite_position({
         view_center.x - (btn_new_game_size.x / 2.0f),
         view_center.y - (btn_new_game_size.y / 2.0f) + settings.window_height * 0.02f
         });
 
-    _btn_continue->get_sprite()->setPosition({
+    _btn_continue->set_sprite_position({
         view_center.x - (btn_continue_size.x / 2.0f),
         view_center.y - (btn_continue_size.y / 2.0f) + settings.window_height * 0.12f
         });
 
-    _btn_settings->get_sprite()->setPosition({
+    _btn_settings->set_sprite_position({
         view_center.x - (btn_settings_size.x / 2.0f),
         view_center.y - (btn_settings_size.y / 2.0f) + settings.window_height * 0.22f
         });
 
-    _btn_exit->get_sprite()->setPosition({
+    _btn_exit->set_sprite_position({
         view_center.x - (btn_exit_size.x / 2.0f),
         view_center.y - (btn_exit_size.y / 2.0f) + settings.window_height * 0.32f
         });
 
-    _btn_new_game->get_text()->setPosition({
+    _btn_new_game->set_text_position({
         view_center.x - (new_game_text_size.x / 2.0f),
         view_center.y - (new_game_text_size.y / 2.0f) + settings.window_height * 0.006f
         });
 
-    _btn_continue->get_text()->setPosition({
+    _btn_continue->set_text_position({
         view_center.x - (continue_text_size.x / 2.0f),
         view_center.y - (continue_text_size.y / 2.0f) + settings.window_height * 0.106f
         });
 
-    _btn_settings->get_text()->setPosition({
+    _btn_settings->set_text_position({
         view_center.x - (settings_text_size.x / 2.0f),
         view_center.y - (settings_text_size.y / 2.0f) + settings.window_height * 0.206f
         });
 
-    _btn_exit->get_text()->setPosition({
+    _btn_exit->set_text_position({
         view_center.x - (exit_text_size.x / 2.0f),
         view_center.y - (exit_text_size.y / 2.0f) + settings.window_height * 0.306f
         });
-}
-
-// ---------------------------------------------------------------------------
-void Menu_main::_register_events() {
-
-    { // MOUSE_MOVED
-        Event_id const event_id = { _get_caller_id(), Event_type::MOUSE_MOVED };
-        Event_handler::get_instance().register_event(event_id, [this](){
-
-            _event__btn_hovered();
-        });
-    }
-
-    { // MOUSE_BUTTON_LEFT_RELEASE
-        Event_id const event_id = { _get_caller_id(), Event_type::MOUSE_BUTTON_LEFT_RELEASE };
-        Event_handler::get_instance().register_event(event_id, [this](){
-
-            if (_btn_new_game->is_hovered()) { _event__btn_clicked__new_game(); }
-            if (_btn_continue->is_hovered()) { _event__btn_clicked__continue(); }
-            if (_btn_settings->is_hovered()) { _event__btn_clicked__settings(); }
-            if (_btn_exit->is_hovered())     { _event__btn_clicked__exit(); }
-        });
-    }
-}
-
-// ---------------------------------------------------------------------------
-void Menu_main::_event__btn_hovered() {
-
-    Cursor_manager& cursor_manager = Cursor_manager::get_instance(_window);
-
-    bool is_something_hovered = false;
-
-    if (_btn_new_game->is_hovered()) { is_something_hovered = true; }
-    if (_btn_continue->is_hovered()) { is_something_hovered = true; }
-    if (_btn_settings->is_hovered()) { is_something_hovered = true; }
-    if (_btn_exit->is_hovered())     { is_something_hovered = true; }
-
-    if (is_something_hovered) {
-
-        cursor_manager.change_cursor(Texture_id::CURSOR__GAUNTLET_MAGIC);
-    } else {
-
-        cursor_manager.change_cursor(Texture_id::CURSOR__GAUNTLET);
-    }
-}
-
-// ---------------------------------------------------------------------------
-void Menu_main::_event__btn_clicked__new_game() {
-
-    Sound_manager::get_instance().play_sfx(Sfx_id::AFRICAN_2);
-}
-
-// ---------------------------------------------------------------------------
-void Menu_main::_event__btn_clicked__continue() {
-
-    Sound_manager::get_instance().play_sfx(Sfx_id::AFRICAN_2);
-}
-
-// ---------------------------------------------------------------------------
-void Menu_main::_event__btn_clicked__settings() {
-
-    Sound_manager::get_instance().play_sfx(Sfx_id::AFRICAN_2);
-    _pending_menu_change = Menu_id::SETTINGS;
-}
-
-// ---------------------------------------------------------------------------
-void Menu_main::_event__btn_clicked__exit() {
-
-    Sound_manager::get_instance().play_sfx(Sfx_id::AFRICAN_2);
-    _window->close();
 }
 
 } // namespace mirelight::menus
