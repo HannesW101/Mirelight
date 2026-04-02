@@ -4,11 +4,11 @@
 
 #include "menus/menu_main.h"
 #include "assets/asset_manager.h"
-#include "settings/setting_manager.h"
 #include "utils/colors.h"
 #include "events/event_handler.h"
 #include "sounds/sound_manager.h"
 #include "cursors/cursor_manager.h"
+#include "settings/setting_manager.h"
 
 // ===========================================================================
 // Namespaces
@@ -24,7 +24,6 @@ using namespace mirelight::assets;
 using namespace mirelight::settings;
 using namespace mirelight::utils;
 using namespace mirelight::events;
-using namespace mirelight::sounds;
 using namespace mirelight::ui;
 using namespace mirelight::cursors;
 
@@ -61,7 +60,6 @@ Menu_main::Menu_main(sf::RenderWindow* window)
     _update_following_ui_elements();
     _update_moving_background();
 
-    Sound_manager::get_instance().play_music(Music_id::AMBIENT_1);
     Cursor_manager::get_instance(_window).change_cursor(Texture_id::CURSOR__GAUNTLET);
 }
 

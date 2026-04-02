@@ -65,7 +65,12 @@ enum class Texture_id {
 
     // Buttons
     BUTTON__03A_NORMAL,
-    BUTTON__03A_SELECTED
+    BUTTON__03A_SELECTED,
+
+    // Sliders and bars
+    SLIDERS_AND_BARS__SLIDER_03_BOX,
+    SLIDERS_AND_BARS__SLIDER_03_BUTTON,
+    SLIDERS_AND_BARS__SLIDER_03_BAR04
 };
 inline std::ostream& operator<<(std::ostream& os, Texture_id const texture_id) {
 
@@ -80,6 +85,9 @@ inline std::ostream& operator<<(std::ostream& os, Texture_id const texture_id) {
         case Texture_id::CURSOR__GAUNTLET_MAGIC: return os << "CURSOR__GAUNTLET_MAGIC";
         case Texture_id::BUTTON__03A_NORMAL: return os << "BUTTON__03A_NORMAL";
         case Texture_id::BUTTON__03A_SELECTED: return os << "BUTTON__03A_SELECTED";
+        case Texture_id::SLIDERS_AND_BARS__SLIDER_03_BOX: return os << "SLIDERS_AND_BARS__SLIDER_03_BOX";
+        case Texture_id::SLIDERS_AND_BARS__SLIDER_03_BUTTON: return os << "SLIDERS_AND_BARS__SLIDER_03_BUTTON";
+        case Texture_id::SLIDERS_AND_BARS__SLIDER_03_BAR04: return os << "SLIDERS_AND_BARS__SLIDER_03_BAR04";
 
         default: return os << "UNKNOW_TEXTURE_ID";
     }
@@ -173,6 +181,11 @@ inline std::string const FILEPATH__TEXTURE__CURSOR__GAUNTLET_MAGIC = "assets/tex
 // Buttons
 inline std::string const FILEPATH__TEXTURE__BUTTON__03A_NORMAL = "assets/textures/UI/Buttons/Button_03A_Normal.png";
 inline std::string const FILEPATH__TEXTURE__BUTTON__03A_SELECTED = "assets/textures/UI/Buttons/Button_03A_Selected.png";
+
+// Sliders and bars
+inline std::string const FILEPATH__TEXTURE__SLIDERS_AND_BARS__SLIDER_03_BOX = "assets/textures/UI/Sliders & Bars/Slider03_Box.png";
+inline std::string const FILEPATH__TEXTURE__SLIDERS_AND_BARS__SLIDER_03_BUTTON = "assets/textures/UI/Sliders & Bars/Slider03_Button.png";
+inline std::string const FILEPATH__TEXTURE__SLIDERS_AND_BARS__SLIDER_03_BAR04 = "assets/textures/UI/Sliders & Bars/Slider03_Bar04.png";
 
 // ---------------------------------------------------------------------------
 // Music filepaths

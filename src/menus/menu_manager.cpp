@@ -6,10 +6,19 @@
 #include "utils/logger.h"
 #include "menus/menu_main.h"
 #include "menus/menu_settings.h"
+#include "sounds/sound_manager.h"
+#include "assets/asset_defs.h"
 
 // ===========================================================================
 // Namespaces
 // ---------------------------------------------------------------------------
+
+// ===========================================================================
+// Using directives
+// ---------------------------------------------------------------------------
+
+using namespace mirelight::sounds;
+using namespace mirelight::assets;
 
 namespace mirelight::menus {
 
@@ -95,6 +104,8 @@ Menu_manager::Menu_manager(sf::RenderWindow* window)
 
     _curr_menu = new Menu_main(_window);
     _curr_menu_id = Menu_id::MAIN;
+
+    Sound_manager::get_instance().play_music(Music_id::AMBIENT_1);
 }
 
 } // namespace mirelight::menus

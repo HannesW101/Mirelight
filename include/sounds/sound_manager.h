@@ -32,9 +32,13 @@ public:
     void stop_music(assets::Music_id const music_id);
 
     void play_sfx(assets::Sfx_id const sfx_id);
+    void play_sfx(assets::Sfx_id const sfx_id, float const volume);
 
     void set_music_volume(float const volume);
     void set_sfx_volume(float const volume);
+
+    float get_music_volume() const;
+    float get_sfx_volume() const;
 
     ~Sound_manager          (                    ) = default;
     Sound_manager           (Sound_manager const&) = delete;

@@ -44,14 +44,25 @@ Menu_settings::Menu_settings(sf::RenderWindow* window)
     , _label_fps_limit(nullptr)
     , _label_music_volume(nullptr)
     , _label_sfx_volume(nullptr)
+    , _btn_back(nullptr)
+    , _btn_apply(nullptr)
+    , _slider_music_volume(nullptr)
+    , _slider_sfx_volume(nullptr)
     {
     _create_backgrounds();
     _create_background_box();
+
     _create_label_resolution();
     _create_label_vsync();
     _create_label_fps_limit();
     _create_label_music_volume();
     _create_label_sfx_volume();
+
+    _create_btn_back();
+    _create_btn_apply();
+
+    _create_slider_music_volume();
+    _create_slider_sfx_volume();
 
     _setup_view();
 
@@ -72,6 +83,10 @@ Menu_settings::~Menu_settings() {
     if (_label_fps_limit  != nullptr) { delete _label_fps_limit;  }
     if (_label_music_volume  != nullptr) { delete _label_music_volume;  }
     if (_label_sfx_volume  != nullptr) { delete _label_sfx_volume;  }
+    if (_btn_back  != nullptr) { delete _btn_back;  }
+    if (_btn_apply  != nullptr) { delete _btn_apply;  }
+    if (_slider_sfx_volume  != nullptr) { delete _slider_sfx_volume;  }
+    if (_slider_music_volume  != nullptr) { delete _slider_music_volume;  }
 }
 
 // ---------------------------------------------------------------------------
@@ -85,6 +100,10 @@ void Menu_settings::draw() {
     if (_label_fps_limit != nullptr) { _label_fps_limit->draw(); }
     if (_label_music_volume != nullptr) { _label_music_volume->draw(); }
     if (_label_sfx_volume != nullptr) { _label_sfx_volume->draw(); }
+    if (_btn_back != nullptr) { _btn_back->draw(); }
+    if (_btn_apply != nullptr) { _btn_apply->draw(); }
+    if (_slider_sfx_volume != nullptr) { _slider_sfx_volume->draw(); }
+    if (_slider_music_volume != nullptr) { _slider_music_volume->draw(); }
 
     _update_moving_background();
     _update_following_ui_elements();
@@ -277,6 +296,131 @@ void Menu_settings::_create_label_sfx_volume() {
 }
 
 // ---------------------------------------------------------------------------
+void Menu_settings::_create_btn_back() {
+
+    Settings const settings = Setting_manager::get_instance().get_settings();
+
+    if (_btn_back == nullptr) {
+
+        _btn_back = new Button(Widget_type::TEXT_BUTTON, _window);
+
+        _btn_back->set_normal_texture(Texture_id::BUTTON__03A_NORMAL);
+        _btn_back->set_hover_texture(Texture_id::BUTTON__03A_SELECTED);
+        _btn_back->set_normal_cursor(Texture_id::CURSOR__GAUNTLET);
+        _btn_back->set_hover_cursor(Texture_id::CURSOR__GAUNTLET_MAGIC);
+        _btn_back->set_hover_sfx(Sfx_id::AFRICAN_1);
+        _btn_back->set_on_click_sfx(Sfx_id::AFRICAN_3);
+        _btn_back->set_text_font(Font_id::TITLE);
+        _btn_back->set_scale({
+            settings.window_width * 0.0013f,
+            settings.window_height * 0.0017f
+            });
+        _btn_back->set_text("BACK");
+        _btn_back->set_char_size({
+            static_cast<unsigned int>(settings.window_width * 0.017f)
+            });
+        _btn_back->set_text_color(sf::Color::White);
+        _btn_back->set_text_border(
+            COLOR__BANNER_BORDER,
+            _btn_back->get_char_size() * 0.1f
+            );
+        _btn_back->on_click([this](){
+
+            _pending_menu_change = Menu_id::MAIN;
+        });
+    }
+}
+
+// ---------------------------------------------------------------------------
+void Menu_settings::_create_btn_apply() {
+
+    Settings const settings = Setting_manager::get_instance().get_settings();
+
+    if (_btn_apply == nullptr) {
+
+        _btn_apply = new Button(Widget_type::TEXT_BUTTON, _window);
+
+        _btn_apply->set_normal_texture(Texture_id::BUTTON__03A_NORMAL);
+        _btn_apply->set_hover_texture(Texture_id::BUTTON__03A_SELECTED);
+        _btn_apply->set_normal_cursor(Texture_id::CURSOR__GAUNTLET);
+        _btn_apply->set_hover_cursor(Texture_id::CURSOR__GAUNTLET_MAGIC);
+        _btn_apply->set_hover_sfx(Sfx_id::AFRICAN_1);
+        _btn_apply->set_on_click_sfx(Sfx_id::AFRICAN_3);
+        _btn_apply->set_text_font(Font_id::TITLE);
+        _btn_apply->set_scale({
+            settings.window_width * 0.0013f,
+            settings.window_height * 0.0017f
+            });
+        _btn_apply->set_text("APPLY");
+        _btn_apply->set_char_size({
+            static_cast<unsigned int>(settings.window_width * 0.017f)
+            });
+        _btn_apply->set_text_color(sf::Color::White);
+        _btn_apply->set_text_border(
+            COLOR__BANNER_BORDER,
+            _btn_apply->get_char_size() * 0.1f
+            );
+        _btn_apply->on_click([this](){
+
+            // TODO: Apply settings
+        });
+    }
+}
+
+// ---------------------------------------------------------------------------
+void Menu_settings::_create_slider_music_volume() {
+
+    Settings const settings = Setting_manager::get_instance().get_settings();
+
+    if (_slider_music_volume == nullptr) {
+
+        _slider_music_volume = new Slider(Widget_type::SLIDER, _window);
+
+        _slider_music_volume->set_container_texture(Texture_id::SLIDERS_AND_BARS__SLIDER_03_BOX);
+        _slider_music_volume->set_bar_texture(Texture_id::SLIDERS_AND_BARS__SLIDER_03_BAR04);
+        _slider_music_volume->set_btn_texture(Texture_id::SLIDERS_AND_BARS__SLIDER_03_BUTTON);
+        _slider_music_volume->set_slider_percentage(100.0f); // TODO: Replace with settings value
+        _slider_music_volume->set_scale({
+            settings.window_width * 0.0020f,
+            settings.window_height * 0.0017f
+            });
+        _slider_music_volume->set_bar_offset(-(settings.window_width * 0.0477f));
+        _slider_music_volume->on_stop_dragging([this](){
+
+            float const music_volume = _slider_music_volume->get_slider_percentage();
+            Sound_manager::get_instance().set_music_volume(music_volume); // TODO: Make not apply when leave menu
+            });
+    }
+}
+
+// ---------------------------------------------------------------------------
+void Menu_settings::_create_slider_sfx_volume() {
+
+    Settings const settings = Setting_manager::get_instance().get_settings();
+
+    if (_slider_sfx_volume == nullptr) {
+
+        _slider_sfx_volume = new Slider(Widget_type::SLIDER, _window);
+
+        _slider_sfx_volume->set_container_texture(Texture_id::SLIDERS_AND_BARS__SLIDER_03_BOX);
+        _slider_sfx_volume->set_bar_texture(Texture_id::SLIDERS_AND_BARS__SLIDER_03_BAR04);
+        _slider_sfx_volume->set_btn_texture(Texture_id::SLIDERS_AND_BARS__SLIDER_03_BUTTON);
+        _slider_sfx_volume->set_slider_percentage(100.0f); // TODO: Replace with settings value
+        _slider_sfx_volume->set_scale({
+            settings.window_width * 0.0020f,
+            settings.window_height * 0.0017f
+            });
+        _slider_sfx_volume->set_bar_offset(-(settings.window_width * 0.0477f));
+
+        _slider_sfx_volume->on_stop_dragging([this](){
+
+            float const sfx_volume = _slider_sfx_volume->get_slider_percentage();
+            Sound_manager::get_instance().play_sfx(Sfx_id::AFRICAN_2, sfx_volume);
+            });
+    }
+}
+
+// ---------------------------------------------------------------------------
 void Menu_settings::_setup_view() {
 
     Settings const settings = Setting_manager::get_instance().get_settings();
@@ -353,6 +497,16 @@ void Menu_settings::_update_following_ui_elements() {
     sf::Vector2f const label_sfx_volume_size = _label_sfx_volume->get_sprite_global_bounds().size;
     sf::Vector2f const label_sfx_volume_text_size = _label_sfx_volume->get_text_global_bounds().size;
 
+    sf::Vector2f const btn_back_size = _btn_back->get_sprite_global_bounds().size;
+    sf::Vector2f const btn_back_text_size = _btn_back->get_text_global_bounds().size;
+
+    sf::Vector2f const btn_apply_size = _btn_apply->get_sprite_global_bounds().size;
+    sf::Vector2f const btn_apply_text_size = _btn_apply->get_text_global_bounds().size;
+
+    sf::Vector2f const slider_sfx_volume_size = _slider_sfx_volume->get_slider_global_bounds().size;
+
+    sf::Vector2f const slider_music_volume_size = _slider_music_volume->get_slider_global_bounds().size;
+
     _background_box->setPosition({
         view_center.x - (background_box_size.x / 2.0f),
         view_center.y - (background_box_size.y / 2.0f)
@@ -401,6 +555,34 @@ void Menu_settings::_update_following_ui_elements() {
     _label_sfx_volume->set_text_position({
         view_center.x - (label_sfx_volume_text_size.x / 2.0f) - settings.window_width * 0.18f,
         view_center.y - (label_sfx_volume_text_size.y / 2.0f) + settings.window_height * 0.17f
+        });
+
+    _btn_back->set_sprite_position({
+        view_center.x - (btn_back_size.x / 2.0f) - settings.window_width * 0.1f,
+        view_center.y - (btn_back_size.y / 2.0f) + settings.window_height * 0.28f
+        });
+    _btn_back->set_text_position({
+        view_center.x - (btn_back_text_size.x / 2.0f) - settings.window_width * 0.1f,
+        view_center.y - (btn_back_text_size.y / 2.0f) + settings.window_height * 0.27f
+        });
+
+    _btn_apply->set_sprite_position({
+        view_center.x - (btn_apply_size.x / 2.0f) + settings.window_width * 0.1f,
+        view_center.y - (btn_apply_size.y / 2.0f) + settings.window_height * 0.28f
+        });
+    _btn_apply->set_text_position({
+        view_center.x - (btn_apply_text_size.x / 2.0f) + settings.window_width * 0.1f,
+        view_center.y - (btn_apply_text_size.y / 2.0f) + settings.window_height * 0.27f
+        });
+
+    _slider_sfx_volume->set_position({
+        view_center.x - (slider_sfx_volume_size.x / 2.0f) + settings.window_width * 0.1f,
+        view_center.y - (slider_sfx_volume_size.y / 2.0f) + settings.window_height * 0.179f
+        });
+
+    _slider_music_volume->set_position({
+        view_center.x - (slider_music_volume_size.x / 2.0f) + settings.window_width * 0.1f,
+        view_center.y - (slider_music_volume_size.y / 2.0f) + settings.window_height * 0.07f
         });
 }
 

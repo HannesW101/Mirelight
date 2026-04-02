@@ -63,6 +63,19 @@ void Sound_manager::play_sfx(assets::Sfx_id const sfx_id) {
 }
 
 // ---------------------------------------------------------------------------
+void Sound_manager::play_sfx(assets::Sfx_id const sfx_id, float const volume) {
+
+    std::erase_if(_active_sfx, [](sf::Sound const& sound) {
+
+        return sound.getStatus() == sf::Sound::Status::Stopped;
+        });
+
+    sf::Sound& sound = _active_sfx.emplace_back(Asset_manager::get_instance().get(sfx_id));
+    sound.setVolume(volume);
+    sound.play();
+}
+
+// ---------------------------------------------------------------------------
 void Sound_manager::set_music_volume(float const volume) {
 
     _music_volume = std::clamp(volume, 0.0f, 100.0f);
@@ -83,6 +96,18 @@ void Sound_manager::set_sfx_volume(float const volume) {
 
         sound.setVolume(_sfx_volume);
     }
+}
+
+// ---------------------------------------------------------------------------
+float Sound_manager::get_music_volume() const {
+
+    return _music_volume;
+}
+
+// ---------------------------------------------------------------------------
+float Sound_manager::get_sfx_volume() const {
+
+    return _sfx_volume;
 }
 
 // ---------------------------------------------------------------------------

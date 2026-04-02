@@ -19,13 +19,15 @@ enum class Widget_type {
 
     SPRITE_BUTTON,
     TEXT_BUTTON,
-    LABEL
+    LABEL,
+    SLIDER
 };
 
 enum class Widget_state {
 
     NORMAL,
-    HOVERED
+    HOVERED,
+    SLIDER_DRAGGING
 };
 
 } // namespace mirelight::ui

@@ -49,6 +49,9 @@ void Asset_manager::init() {
         if (success) { success = _load_texture(Texture_id::BUTTON__03A_NORMAL, FILEPATH__TEXTURE__BUTTON__03A_NORMAL); }
         if (success) { success = _load_texture(Texture_id::BUTTON__03A_SELECTED, FILEPATH__TEXTURE__BUTTON__03A_SELECTED); }
         if (success) { success = _load_texture(Texture_id::TITLE_BANNER__MEDIUM_01C, FILEPATH__TEXTURE__TITLE_BANNER__MEDIUM_01C); }
+        if (success) { success = _load_texture(Texture_id::SLIDERS_AND_BARS__SLIDER_03_BAR04, FILEPATH__TEXTURE__SLIDERS_AND_BARS__SLIDER_03_BAR04); }
+        if (success) { success = _load_texture(Texture_id::SLIDERS_AND_BARS__SLIDER_03_BOX, FILEPATH__TEXTURE__SLIDERS_AND_BARS__SLIDER_03_BOX); }
+        if (success) { success = _load_texture(Texture_id::SLIDERS_AND_BARS__SLIDER_03_BUTTON, FILEPATH__TEXTURE__SLIDERS_AND_BARS__SLIDER_03_BUTTON); }
 
         // Music
         if (success) { success = _load_music(Music_id::AMBIENT_1,  FILEPATH__MUSIC__AMBIENT_1);  }
