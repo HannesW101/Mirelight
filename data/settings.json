@@ -1,0 +1,20 @@
+{
+    "sections": {
+        "application": {
+            "antialiasing": 0,
+            "fixed_timestep": 0.01666666753590107,
+            "framerate_limit": 0,
+            "fullscreen": true,
+            "height": 1440,
+            "max_fixed_steps_per_frame": 5,
+            "resizable": true,
+            "title": "Mirelight",
+            "vsync": true,
+            "width": 2560
+        },
+        "audio": {
+            "music": 1.0,
+            "sfx": 1.0
+        }
+    }
+}

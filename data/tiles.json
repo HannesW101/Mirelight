@@ -1,0 +1,7 @@
+{
+  "tiles": [
+    { "id": 1, "name": "grass", "texture": "grass", "walkable": true,  "atlas_x": 0, "atlas_y": 0 },
+    { "id": 2, "name": "water", "texture": "water", "walkable": false, "atlas_x": 0, "atlas_y": 0 },
+    { "id": 3, "name": "stone", "texture": "stone", "walkable": true,  "atlas_x": 0, "atlas_y": 0 }
+  ]
+}
