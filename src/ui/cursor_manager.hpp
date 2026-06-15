@@ -4,9 +4,6 @@
 // Includes
 // ----------------------------------------------------------------------------
 
-#include "module-scene/include/scene.hpp"
-#include "ui/cursor_manager.hpp"
-
 #include "SFML/Graphics/Sprite.hpp"
 #include "SFML/Graphics/Texture.hpp"
 
@@ -17,8 +14,9 @@
 // Forward declarations
 // ----------------------------------------------------------------------------
 
-namespace titan::ui     { class UI_system; }
+namespace titan::resources { class Resource_manager; }
 namespace titan::render { class Renderer; }
+namespace sf { class RenderWindow; }
 
 // ============================================================================
 // Namespaces
@@ -27,32 +25,34 @@ namespace titan::render { class Renderer; }
 namespace mirelight {
 
 // ============================================================================
-// Class Menu_scene
+// Enums
 // ----------------------------------------------------------------------------
 
-class Menu_scene final
-    : public titan::scene::Scene
-    {
+enum class Cursor_mode {
+
+    DEFAULT,
+    HOVER
+};
+
+// ============================================================================
+// Class Cursor_manager
+// ----------------------------------------------------------------------------
+
+class Cursor_manager {
 
 public:
-    Menu_scene();
-    ~Menu_scene() override;
-
-    void on_enter() override;
-    void on_exit()  override;
-    void update(float dt) override;
-    void render(titan::render::Renderer& renderer) override;
+    void load(titan::resources::Resource_manager& rm);
+    bool set_mode(Cursor_mode mode); // returns true when transitioning to HOVER
+    Cursor_mode mode() const { return _mode; }
+    void update(sf::RenderWindow const& window);
+    void render(titan::render::Renderer& renderer);
 
 private:
-    std::unique_ptr<titan::ui::UI_system> _ui;
-
-    std::shared_ptr<sf::Texture> _mountains_tex;
-    std::optional<sf::Sprite>    _bg1;
-    std::optional<sf::Sprite>    _bg2;
-    float                        _bg_scroll = 0.0f;
-    float                        _bg_width  = 1280.0f;
-
-    Cursor_manager _cursor;
+    Cursor_mode _mode = Cursor_mode::DEFAULT;
+    Cursor_mode _prev = Cursor_mode::DEFAULT;
+    std::shared_ptr<sf::Texture> _tex_default;
+    std::shared_ptr<sf::Texture> _tex_hover;
+    std::optional<sf::Sprite> _sprite;
 };
 
 } // namespace mirelight

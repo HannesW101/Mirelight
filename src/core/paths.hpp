@@ -1,18 +1,22 @@
 #pragma once
 
 // ============================================================================
+// Includes
+// ----------------------------------------------------------------------------
+
+#include <string_view>
+
+// ============================================================================
 // Namespaces
 // ----------------------------------------------------------------------------
 
-namespace mirelight::world_cfg {
+namespace mirelight::paths {
 
 // ============================================================================
 // Constants
 // ----------------------------------------------------------------------------
 
-inline constexpr int TILE_SIZE = 32;
-inline constexpr int CHUNK_TILES = 16;
-inline constexpr int CHUNK_PIXELS = TILE_SIZE * CHUNK_TILES;
-inline constexpr int STREAM_RADIUS = 2;
+inline constexpr std::string_view DATA = "data";
+inline constexpr std::string_view ASSETS = "assets";
 
-} // namespace mirelight::world_cfg
+} // namespace mirelight::paths

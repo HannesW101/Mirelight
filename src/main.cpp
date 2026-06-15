@@ -4,6 +4,7 @@
 
 #include "scenes/menu_scene.hpp"
 #include "core/asset_loader.hpp"
+#include "ui/ui_style.hpp"
 
 #include "module-app/include/application.hpp"
 #include "module-app/include/application_config.hpp"
@@ -11,7 +12,6 @@
 #include "module-render/include/renderer.hpp"
 #include "module-resources/include/resource_manager.hpp"
 #include "module-audio/include/audio_system.hpp"
-#include "module-audio/include/audio_bus.hpp"
 #include "module-core/config/include/config_manager.hpp"
 
 #include "SFML/Window/VideoMode.hpp"
@@ -42,7 +42,7 @@ int main() {
 
     app::Application_config cfg;
     cfg.title = "Mirelight";
-    cfg.clear_color = sf::Color(20, 24, 28); // TODO: Magic color
+    cfg.clear_color = style::CLEAR_COLOR;
 
     if (cfg_mgr.has("settings")) {
 
@@ -67,14 +67,9 @@ int main() {
     app.set_on_start([&] {
         scenes.attach(app);
 
-        // Restore audio volumes from saved config
+        // Restore audio mix from saved config
         if (cfg_mgr.has("settings")) {
-
-            auto const& s = cfg_mgr.get("settings");
-            auto const music_vol = static_cast<float>(s.get_or<double>("audio", "music", 0.7));
-            auto const sfx_vol   = static_cast<float>(s.get_or<double>("audio", "sfx",   0.8));
-            app.audio().set_bus_volume(audio::Audio_bus::MUSIC, music_vol);
-            app.audio().set_bus_volume(audio::Audio_bus::SFX, sfx_vol);
+            app.audio().load_mix(cfg_mgr.get("settings"));
         }
 
         scenes.push(std::make_unique<Menu_scene>());

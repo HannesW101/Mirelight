@@ -5,6 +5,7 @@
 // ----------------------------------------------------------------------------
 
 #include "module-scene/include/scene.hpp"
+#include "module-core/events/include/event_listener.hpp"
 
 #include "world/tiles/tile_database.hpp"
 
@@ -35,13 +36,19 @@ class Player_factory;
 // Class World_scene
 // ----------------------------------------------------------------------------
 
-class World_scene final : public titan::scene::Scene {
+class World_scene final
+    : public titan::scene::Scene
+    , public titan::events::Event_listener
+{
 
 public:
     World_scene();
     ~World_scene() override;
 
-    void on_enter() override;
+    void on_enter()  override;
+    void on_exit()   override;
+    void on_pause()  override;
+    void on_resume() override;
     void update(float dt) override;
     void fixed_update(float fixed_dt) override;
     void render(titan::render::Renderer& renderer) override;
@@ -55,7 +62,10 @@ private:
     std::unique_ptr<titan::ui::UI_system>  _ui;
 
     titan::game::Game_object* _player = nullptr;
-    bool                      _pause_latch = false;
+    std::uint64_t             _escape_cb_id = 0;
+
+    void _register_escape();
+    void _deregister_escape();
 };
 
 } // namespace mirelight

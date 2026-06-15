@@ -4,6 +4,7 @@
 
 #include "scenes/world_scene.hpp"
 #include "scenes/pause_scene.hpp"
+#include "core/paths.hpp"
 #include "world/chunks/chunk_streamer.hpp"
 #include "world/rendering/tilemap_renderer.hpp"
 #include "world/world_config.hpp"
@@ -26,8 +27,10 @@
 #include "module-ui/include/ui_length.hpp"
 
 #include "module-audio/include/audio_system.hpp"
+#include "module-audio/include/audio_bus.hpp"
 
-#include "SFML/Window/Keyboard.hpp"
+#include "module-core/events/include/sfml_event_manager.hpp"
+#include "module-core/events/include/event_type.hpp"
 
 #include <memory>
 #include <string>
@@ -44,15 +47,7 @@ namespace mirelight {
 
 using namespace titan::game;
 using namespace titan::ui;
-
-// ============================================================================
-// Constants
-// ----------------------------------------------------------------------------
-
-namespace {
-
-char const* const DATA_DIR = "data"; // TODO maybe move constants like these to a shared location file
-}
+using namespace titan::events;
 
 // ============================================================================
 // Class World_scene
@@ -67,26 +62,50 @@ World_scene::World_scene()
 World_scene::~World_scene() = default;
 
 // ----------------------------------------------------------------------------
+void World_scene::_register_escape() {
+
+    _escape_cb_id = SFML_event_manager::instance().register_callback(
+        SFML_event_type::KEYPRESS_ESCAPE,
+        [this](SFML_event_data const&) {
+            application().audio().play_sfx("sfx_ui_click", titan::audio::Audio_bus::UI);
+            scenes().push(std::make_unique<Pause_scene>());
+            },
+        listener_id()
+        );
+}
+
+// ----------------------------------------------------------------------------
+void World_scene::_deregister_escape() {
+
+    if (_escape_cb_id != 0) {
+
+        SFML_event_manager::instance().deregister_callback(_escape_cb_id);
+        _escape_cb_id = 0;
+    }
+}
+
+// ----------------------------------------------------------------------------
 void World_scene::on_enter() {
 
-    // Tile definitions
-    _tiles.load(std::string(DATA_DIR) + "/tiles.json");
+    std::string const data_dir{paths::DATA};
+    _tiles.load(data_dir + "/tiles.json");
 
-    _streamer = std::make_unique<Chunk_streamer>(_tiles, DATA_DIR);
+    _streamer = std::make_unique<Chunk_streamer>(_tiles, data_dir);
     _tilemap  = std::make_unique<Tilemap_renderer>(_tiles, application().resources());
     _world    = std::make_unique<World>();
 
-    _player_factory = std::make_unique<Player_factory>(*_world, *_streamer, application().renderer().world_camera());
+    _player_factory = std::make_unique<Player_factory>(
+        *_world,
+        *_streamer,
+        application().renderer().world_camera()
+        );
 
-    // Spawn the player near the origin and stream the first chunks around it.
-    sf::Vector2f const start{ 4.0f * world_cfg::TILE_SIZE, 4.0f * world_cfg::TILE_SIZE };
+    sf::Vector2f const start{4.0f * world_cfg::TILE_SIZE, 4.0f * world_cfg::TILE_SIZE};
     _streamer->update(start);
     _player = _player_factory->create(start);
 
-    // Crossfade to a different ambient track for the world
     application().audio().music().crossfade_to("music_ambient_2", 2.0f, true);
 
-    // HUD
     _ui = std::make_unique<UI_system>(application());
     auto coords = std::make_unique<Label>("hud_coords");
     coords->set_anchor(UI_anchor::TOP_LEFT);
@@ -94,6 +113,26 @@ void World_scene::on_enter() {
     coords->set_size(UI_length::px(360.0f), UI_length::px(24.0f));
     coords->set_text("Mirelight");
     _ui->manager().add(std::move(coords));
+
+    _register_escape();
+}
+
+// ----------------------------------------------------------------------------
+void World_scene::on_exit() {
+
+    _deregister_escape();
+}
+
+// ----------------------------------------------------------------------------
+void World_scene::on_pause() {
+
+    _deregister_escape();
+}
+
+// ----------------------------------------------------------------------------
+void World_scene::on_resume() {
+
+    _register_escape();
 }
 
 // ----------------------------------------------------------------------------
@@ -112,10 +151,8 @@ void World_scene::update(
     if (!_world) { return; }
 
     _world->update(dt);
-
     application().renderer().world_camera().tick(dt);
 
-    // Stream chunks around the player's new position
     if (_player) {
 
         _streamer->update(_player->transform().position());
@@ -125,25 +162,11 @@ void World_scene::update(
             sf::Vector2f const p = _player->transform().position();
             int const tx = static_cast<int>(p.x) / world_cfg::TILE_SIZE;
             int const ty = static_cast<int>(p.y) / world_cfg::TILE_SIZE;
-
             label->set_text("Tile (" + std::to_string(tx) + ", " + std::to_string(ty) + ")   Chunks: " + std::to_string(_streamer->chunks().size()));
         }
     }
 
     _ui->update(dt);
-
-    // Pause overlay on Escape
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape)) { // TODO same comment for events
-
-        if (!_pause_latch) {
-
-            _pause_latch = true;
-            scenes().push(std::make_unique<Pause_scene>());
-        }
-    } else {
-
-        _pause_latch = false;
-    }
 }
 
 // ----------------------------------------------------------------------------
