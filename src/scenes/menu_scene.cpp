@@ -89,8 +89,8 @@ void Menu_scene::on_enter() {
     // Title banner image
     auto banner = std::make_unique<tu::Image>("banner");
     banner->set_anchor(tu::UI_anchor::TOP_CENTER);
-    banner->set_offset(0.0f, 18.0f);
-    banner->set_size(tu::UI_length::px(440.0f), tu::UI_length::px(110.0f));
+    banner->set_offset(0.0f, 60.0f);
+    banner->set_size(tu::UI_length::px(1200.0f), tu::UI_length::px(400.0f));
     banner->set_texture("banner_02c");
     banner->set_preserve_aspect(false);
     gui.add(std::move(banner));
@@ -98,29 +98,30 @@ void Menu_scene::on_enter() {
     // "MIRELIGHT" title label
     auto title = std::make_unique<tu::Label>("title");
     title->set_anchor(tu::UI_anchor::TOP_CENTER);
-    title->set_offset(0.0f, 36.0f);
-    title->set_size(tu::UI_length::px(440.0f), tu::UI_length::px(68.0f));
+    title->set_offset(0.0f, 200.0f);
+    title->set_size(tu::UI_length::pct(0.4f), tu::UI_length::pct(0.1f));
     title->set_text("MIRELIGHT");
     title->set_align(tu::Text_align::CENTER);
     title->set_visual_all(tu::Visual::none());
-    title->set_text_style_all(tu::Text_appearance{"title_font", 48.0f, sf::Color::White});
+    title->set_text_style_all(tu::Text_appearance{"title_font", 80.0f, sf::Color::White, sf::Color::Black, 6.0f});
     gui.add(std::move(title));
 
     // Menu panel
     auto panel = std::make_unique<tu::Panel>("menu_panel");
     panel->set_anchor(tu::UI_anchor::MIDDLE_CENTER);
-    panel->set_offset(0.0f, 62.0f);
-    panel->set_size(tu::UI_length::px(380.0f), tu::UI_length::px(318.0f));
-    panel->set_padding(18.0f);
+    panel->set_size(tu::UI_length::pct(0.4f), tu::UI_length::pct(0.6f));
+    panel->set_offset({0.0f, 150.0f});
     panel->set_visual_all(tu::Visual::texture("bg_box"));
 
     auto box = std::make_unique<tu::V_box>("btn_box");
-    box->set_size(tu::UI_length::pct(1.0f), tu::UI_length::pct(1.0f));
-    box->set_spacing(14.0f);
+    box->set_anchor(tu::UI_anchor::MIDDLE_CENTER);
+    box->set_size(tu::UI_length::pct(0.6f), tu::UI_length::px(274.0f));
+    box->set_spacing(20.0f);
     box->set_visual_all(tu::Visual::none());
 
     auto new_game = std::make_unique<tu::Button>("new_game");
     new_game->set_text("NEW GAME");
+    new_game->set_text_style_all(tu::Text_appearance{"title_font", 30.0f, sf::Color::White, sf::Color::Black, 2.25f});
     new_game->set_size(tu::UI_length::pct(1.0f), tu::UI_length::px(58.0f));
     new_game->set_on_click([this] {
         application().audio().play_sfx("sfx_ui_click", ta::Audio_bus::UI);
@@ -130,18 +131,25 @@ void Menu_scene::on_enter() {
 
     auto cont = std::make_unique<tu::Button>("continue");
     cont->set_text("CONTINUE");
+    cont->set_text_style_all(tu::Text_appearance{"title_font", 30.0f, sf::Color::White, sf::Color::Black, 2.25f});
+    cont->set_text_style(tu::Widget_state::DISABLED, tu::Text_appearance{
+        "title_font", 30.0f, sf::Color(255, 255, 255, 120), sf::Color(0, 0, 0, 120), 2.25f});
     cont->set_size(tu::UI_length::pct(1.0f), tu::UI_length::px(58.0f));
     cont->set_enabled(false);
     box->add_child(std::move(cont));
 
     auto settings = std::make_unique<tu::Button>("settings");
     settings->set_text("SETTINGS");
+    settings->set_text_style_all(tu::Text_appearance{"title_font", 30.0f, sf::Color::White, sf::Color::Black, 2.25f});
+    settings->set_text_style(tu::Widget_state::DISABLED, tu::Text_appearance{
+        "title_font", 30.0f, sf::Color(255, 255, 255, 120), sf::Color(0, 0, 0, 120), 2.25f});
     settings->set_size(tu::UI_length::pct(1.0f), tu::UI_length::px(58.0f));
     settings->set_enabled(false);
     box->add_child(std::move(settings));
 
     auto exit_btn = std::make_unique<tu::Button>("exit");
     exit_btn->set_text("EXIT");
+    exit_btn->set_text_style_all(tu::Text_appearance{"title_font", 30.0f, sf::Color::White, sf::Color::Black, 2.25f});
     exit_btn->set_size(tu::UI_length::pct(1.0f), tu::UI_length::px(58.0f));
     exit_btn->set_on_click([this] {
         application().audio().play_sfx("sfx_ui_click", ta::Audio_bus::UI);

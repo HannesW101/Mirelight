@@ -14,7 +14,7 @@ else()
     include(FetchContent)
     FetchContent_Declare(Titan
         GIT_REPOSITORY https://github.com/HannesW101/Titan
-        GIT_TAG        v1.0.1)
+        GIT_TAG        v1.1.0)
     FetchContent_MakeAvailable(Titan)
 endif()
 

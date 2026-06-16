@@ -45,6 +45,10 @@ inline titan::ui::Theme mirelight_theme() {
     btn.pressed (Visual::texture("btn_selected", PRESSED_TINT  ));
     btn.disabled(Visual::texture("btn_normal",DISABLED_TINT ));
     btn.set_text(Widget_state::NORMAL, Text_appearance{"title_font", 20.0f, BTN_TEXT});
+    btn.set_text(Widget_state::DISABLED, Text_appearance{
+        "title_font", 20.0f,
+        sf::Color(BTN_TEXT.r, BTN_TEXT.g, BTN_TEXT.b, DISABLED_TINT.a)
+        });
 
     Theme theme;
     theme.set("button", btn);
