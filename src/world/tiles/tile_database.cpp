@@ -70,6 +70,7 @@ bool Tile_database::load(
         def.walkable = entry.value("walkable", true);
         def.atlas_x  = entry.value("atlas_x", 0);
         def.atlas_y  = entry.value("atlas_y", 0);
+        def.source_tile_px = entry.value("source_tile_px", 32);
 
         if (def.id == 0) { continue; } // 0 reserved
 

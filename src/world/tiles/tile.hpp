@@ -31,6 +31,7 @@ struct Tile_def {
     bool        walkable = true;
     int         atlas_x = 0;
     int         atlas_y = 0;
+    int         source_tile_px = 32; // native pixel size of one cell in texture's sheet
 };
 
 } // namespace mirelight

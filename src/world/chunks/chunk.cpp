@@ -83,22 +83,30 @@ void Chunk::load_or_generate(
     std::ostringstream path;
     path << data_dir << "/world/" << _coord.x << "_" << _coord.y << ".chunk";
 
-    std::ifstream file(path.str());
-    if (file.is_open()) {
-
-        // Simple whitespace separated id grid
-        for (int i = 0; i < N * N; ++i) {
-
-            int v = 0;
-            if (!(file >> v)) { v = default_tile; }
-
-            _tiles[static_cast<std::size_t>(i)] = static_cast<Tile_id>(v);
-        }
-
-        return;
-    }
+    if (load_from_path(path.str(), default_tile)) { return; }
 
     _generate(default_tile);
+}
+
+// ----------------------------------------------------------------------------
+bool Chunk::load_from_path(
+    std::string const& path,
+    Tile_id default_tile
+    ) {
+
+    std::ifstream file(path);
+    if (!file.is_open()) { return false; }
+
+    // Simple whitespace separated id grid
+    for (int i = 0; i < N * N; ++i) {
+
+        int v = 0;
+        if (!(file >> v)) { v = default_tile; }
+
+        _tiles[static_cast<std::size_t>(i)] = static_cast<Tile_id>(v);
+    }
+
+    return true;
 }
 
 // ----------------------------------------------------------------------------
@@ -106,8 +114,8 @@ void Chunk::_generate(
     Tile_id default_tile
     ) {
 
-    // No authored file: fill with the default tile so the world is always
-    // walkable
+    // No authored file: fill with the default tile
+    // so the world is always walkable
     _tiles.fill(default_tile);
 }
 

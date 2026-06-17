@@ -5,6 +5,7 @@
 #include "scenes/menu_scene.hpp"
 #include "core/asset_loader.hpp"
 #include "ui/ui_style.hpp"
+#include "world/areas/game_session.hpp"
 
 #include "module-app/include/application.hpp"
 #include "module-app/include/application_config.hpp"
@@ -64,6 +65,8 @@ int main() {
     loader.load_all();
 
     scene::Scene_manager scenes;
+    Game_session session;
+
     app.set_on_start([&] {
         scenes.attach(app);
 
@@ -72,11 +75,17 @@ int main() {
             app.audio().load_mix(cfg_mgr.get("settings"));
         }
 
-        scenes.push(std::make_unique<Menu_scene>());
+        scenes.push(std::make_unique<Menu_scene>(session));
+        });
+
+    app.set_on_stop([&] {
+        // Safety net flush: persist every resident area's state on exit,
+        // covering areas that never unloaded normally this session.
+        session.state_store().save_all(session.save_dir());
         });
 
     app.set_fixed_update([&](float dt) { scenes.fixed_update(dt); });
-    app.set_update([&](float dt) { scenes.update(dt); });
+    app.set_update([&](float dt) { session.update(dt); scenes.update(dt); });
     app.set_render([&](render::Renderer& r) { scenes.render(r); });
 
     return app.run();

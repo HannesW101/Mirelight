@@ -8,6 +8,7 @@
 #include "module-core/events/include/event_listener.hpp"
 
 #include "world/tiles/tile_database.hpp"
+#include "world/areas/object_factory.hpp"
 
 #include <memory>
 
@@ -31,6 +32,8 @@ namespace mirelight {
 class Chunk_streamer;
 class Tilemap_renderer;
 class Player_factory;
+class Object_spawner;
+class Game_session;
 
 // ============================================================================
 // Class World_scene
@@ -39,10 +42,10 @@ class Player_factory;
 class World_scene final
     : public titan::scene::Scene
     , public titan::events::Event_listener
-{
+    {
 
 public:
-    World_scene();
+    explicit World_scene(Game_session& session);
     ~World_scene() override;
 
     void on_enter()  override;
@@ -54,7 +57,11 @@ public:
     void render(titan::render::Renderer& renderer) override;
 
 private:
+    Game_session& _session;
+
     Tile_database                          _tiles;
+    Object_factory                         _object_factory;
+    std::unique_ptr<Object_spawner>        _spawner;
     std::unique_ptr<Chunk_streamer>        _streamer;
     std::unique_ptr<Tilemap_renderer>      _tilemap;
     std::unique_ptr<titan::game::World>    _world;

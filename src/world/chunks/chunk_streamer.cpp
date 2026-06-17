@@ -4,6 +4,8 @@
 
 #include "world/chunks/chunk_streamer.hpp"
 #include "world/tiles/tile_database.hpp"
+#include "world/areas/object_spawner.hpp"
+#include "world/world_config.hpp"
 
 #include <cmath>
 #include <utility>
@@ -51,10 +53,14 @@ int floor_div(
 // ----------------------------------------------------------------------------
 Chunk_streamer::Chunk_streamer(
     Tile_database& tiles,
-    std::string data_dir
+    std::string data_dir,
+    Object_spawner* spawner,
+    titan::game::World* world
     )
     : _tiles(tiles)
     , _data_dir(std::move(data_dir))
+    , _spawner(spawner)
+    , _world(world)
     {
 
     // Default ground tile = first named "grass", else id 1
@@ -100,7 +106,11 @@ void Chunk_streamer::update(
         }
     }
 
-    for (auto const& c : to_drop) { _chunks.erase(c); }
+    for (auto const& c : to_drop) {
+
+        if (_spawner && _world) { _spawner->unload_area(Area_id::chunk(c.x, c.y), *_world); }
+        _chunks.erase(c);
+    }
 }
 
 // ----------------------------------------------------------------------------
@@ -113,6 +123,15 @@ void Chunk_streamer::_ensure_loaded(
     auto chunk = std::make_unique<Chunk>(c);
     chunk->load_or_generate(_data_dir, _default_tile);
     _chunks.emplace(c, std::move(chunk));
+
+    if (_spawner && _world) {
+
+        sf::Vector2f const origin{
+            static_cast<float>(c.x * world_cfg::CHUNK_PIXELS),
+            static_cast<float>(c.y * world_cfg::CHUNK_PIXELS)
+            };
+        _spawner->spawn_area(Area_id::chunk(c.x, c.y), origin, *_world);
+    }
 }
 
 // ----------------------------------------------------------------------------

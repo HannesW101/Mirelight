@@ -27,6 +27,12 @@ namespace titan::render { class Renderer; }
 namespace mirelight {
 
 // ============================================================================
+// Forward declarations (2/2)
+// ----------------------------------------------------------------------------
+
+class Game_session;
+
+// ============================================================================
 // Class Menu_scene
 // ----------------------------------------------------------------------------
 
@@ -35,7 +41,7 @@ class Menu_scene final
     {
 
 public:
-    Menu_scene();
+    explicit Menu_scene(Game_session& session);
     ~Menu_scene() override;
 
     void on_enter() override;
@@ -44,6 +50,8 @@ public:
     void render(titan::render::Renderer& renderer) override;
 
 private:
+    Game_session& _session;
+
     std::unique_ptr<titan::ui::UI_system> _ui;
 
     std::shared_ptr<sf::Texture> _mountains_tex;

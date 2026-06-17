@@ -42,8 +42,9 @@ using namespace titan::audio;
 // ----------------------------------------------------------------------------
 
 // ----------------------------------------------------------------------------
-Pause_scene::Pause_scene()
+Pause_scene::Pause_scene(Game_session& session)
     : Scene("pause")
+    , _session(session)
     {
 
     set_renders_below(true);
@@ -101,7 +102,7 @@ void Pause_scene::on_enter() {
     to_menu->set_on_click([this] {
         application().audio().play_sfx("sfx_ui_click", Audio_bus::UI);
         scenes().clear();
-        scenes().push(std::make_unique<Menu_scene>());
+        scenes().push(std::make_unique<Menu_scene>(_session));
         });
     box->add_child(std::move(to_menu));
 

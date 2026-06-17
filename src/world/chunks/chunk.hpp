@@ -45,6 +45,8 @@ public:
 
     void load_or_generate(std::string const& data_dir, Tile_id default_tile);
 
+    bool load_from_path(std::string const& path, Tile_id default_tile);
+
 private:
     Chunk_coord _coord;
     std::array<Tile_id, world_cfg::CHUNK_TILES * world_cfg::CHUNK_TILES> _tiles{};

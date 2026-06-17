@@ -21,13 +21,19 @@ namespace titan::ui { class UI_system; }
 namespace mirelight {
 
 // ============================================================================
+// Forward declarations (2/2)
+// ----------------------------------------------------------------------------
+
+class Game_session;
+
+// ============================================================================
 // Class Pause_scene
 // ----------------------------------------------------------------------------
 
 class Pause_scene final : public titan::scene::Scene {
 
 public:
-    Pause_scene();
+    explicit Pause_scene(Game_session& session);
     ~Pause_scene() override;
 
     void on_enter() override;
@@ -35,6 +41,8 @@ public:
     void render(titan::render::Renderer& renderer) override;
 
 private:
+    Game_session& _session;
+
     std::unique_ptr<titan::ui::UI_system> _ui;
 };
 

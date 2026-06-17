@@ -8,6 +8,8 @@
 #include "world/chunks/chunk_streamer.hpp"
 #include "world/rendering/tilemap_renderer.hpp"
 #include "world/world_config.hpp"
+#include "world/areas/object_spawner.hpp"
+#include "world/areas/game_session.hpp"
 #include "entities/player/player_factory.hpp"
 
 #include "module-app/include/application.hpp"
@@ -54,8 +56,9 @@ using namespace titan::events;
 // ----------------------------------------------------------------------------
 
 // ----------------------------------------------------------------------------
-World_scene::World_scene()
+World_scene::World_scene(Game_session& session)
     : Scene("world")
+    , _session(session)
 {}
 
 // ----------------------------------------------------------------------------
@@ -68,7 +71,7 @@ void World_scene::_register_escape() {
         SFML_event_type::KEYPRESS_ESCAPE,
         [this](SFML_event_data const&) {
             application().audio().play_sfx("sfx_ui_click", titan::audio::Audio_bus::UI);
-            scenes().push(std::make_unique<Pause_scene>());
+            scenes().push(std::make_unique<Pause_scene>(_session));
             },
         listener_id()
         );
@@ -90,9 +93,14 @@ void World_scene::on_enter() {
     std::string const data_dir{paths::DATA};
     _tiles.load(data_dir + "/tiles.json");
 
-    _streamer = std::make_unique<Chunk_streamer>(_tiles, data_dir);
+    register_default_object_types(_object_factory);
+    _world   = std::make_unique<World>();
+    _spawner = std::make_unique<Object_spawner>(
+        Spawn_table_loader(data_dir), _object_factory, _session.state_store(), _session
+        );
+
+    _streamer = std::make_unique<Chunk_streamer>(_tiles, data_dir, _spawner.get(), _world.get());
     _tilemap  = std::make_unique<Tilemap_renderer>(_tiles, application().resources());
-    _world    = std::make_unique<World>();
 
     _player_factory = std::make_unique<Player_factory>(
         *_world,

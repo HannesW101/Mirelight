@@ -1,7 +1,51 @@
 {
   "tiles": [
-    { "id": 1, "name": "grass", "texture": "grass", "walkable": true,  "atlas_x": 0, "atlas_y": 0 },
-    { "id": 2, "name": "water", "texture": "water", "walkable": false, "atlas_x": 0, "atlas_y": 0 },
-    { "id": 3, "name": "stone", "texture": "stone", "walkable": true,  "atlas_x": 0, "atlas_y": 0 }
+    { "id": 1, "name": "grass", "texture": "tiles_grass", "walkable": true,  "atlas_x": 0, "atlas_y": 0, "source_tile_px": 48 },
+
+    { "id": 10, "name": "bush",        "texture": "tiles_bush",        "walkable": false, "atlas_x": 0, "atlas_y": 0, "source_tile_px": 48 },
+    { "id": 11, "name": "flower_1",    "texture": "tiles_flower_1",    "walkable": true,  "atlas_x": 0, "atlas_y": 0, "source_tile_px": 48 },
+    { "id": 12, "name": "flower_2",    "texture": "tiles_flower_2",    "walkable": true,  "atlas_x": 0, "atlas_y": 0, "source_tile_px": 48 },
+    { "id": 13, "name": "flower_3",    "texture": "tiles_flower_3",    "walkable": true,  "atlas_x": 0, "atlas_y": 0, "source_tile_px": 48 },
+    { "id": 14, "name": "flower_4",    "texture": "tiles_flower_4",    "walkable": true,  "atlas_x": 0, "atlas_y": 0, "source_tile_px": 48 },
+    { "id": 15, "name": "flower_5",    "texture": "tiles_flower_5",    "walkable": true,  "atlas_x": 0, "atlas_y": 0, "source_tile_px": 48 },
+    { "id": 16, "name": "flower_6",    "texture": "tiles_flower_6",    "walkable": true,  "atlas_x": 0, "atlas_y": 0, "source_tile_px": 48 },
+    { "id": 17, "name": "flower_7",    "texture": "tiles_flower_7",    "walkable": true,  "atlas_x": 0, "atlas_y": 0, "source_tile_px": 48 },
+    { "id": 18, "name": "flower_8",    "texture": "tiles_flower_8",    "walkable": true,  "atlas_x": 0, "atlas_y": 0, "source_tile_px": 48 },
+    { "id": 19, "name": "flower_9",    "texture": "tiles_flower_9",    "walkable": true,  "atlas_x": 0, "atlas_y": 0, "source_tile_px": 48 },
+    { "id": 20, "name": "leaves_1",    "texture": "tiles_leaves_1",    "walkable": true,  "atlas_x": 0, "atlas_y": 0, "source_tile_px": 48 },
+    { "id": 21, "name": "leaves_2",    "texture": "tiles_leaves_2",    "walkable": true,  "atlas_x": 0, "atlas_y": 0, "source_tile_px": 48 },
+    { "id": 22, "name": "leaves_3",    "texture": "tiles_leaves_3",    "walkable": true,  "atlas_x": 0, "atlas_y": 0, "source_tile_px": 48 },
+    { "id": 23, "name": "leaves_4",    "texture": "tiles_leaves_4",    "walkable": true,  "atlas_x": 0, "atlas_y": 0, "source_tile_px": 48 },
+    { "id": 24, "name": "rock_1",      "texture": "tiles_rock_1",      "walkable": false, "atlas_x": 0, "atlas_y": 0, "source_tile_px": 48 },
+    { "id": 25, "name": "rock_2",      "texture": "tiles_rock_2",      "walkable": false, "atlas_x": 0, "atlas_y": 0, "source_tile_px": 48 },
+    { "id": 26, "name": "rock_3",      "texture": "tiles_rock_3",      "walkable": false, "atlas_x": 0, "atlas_y": 0, "source_tile_px": 48 },
+    { "id": 27, "name": "rock_4",      "texture": "tiles_rock_4",      "walkable": false, "atlas_x": 0, "atlas_y": 0, "source_tile_px": 48 },
+    { "id": 28, "name": "stone_tile",  "texture": "tiles_stone_tile",  "walkable": true,  "atlas_x": 0, "atlas_y": 0, "source_tile_px": 48 },
+    { "id": 29, "name": "tall_grass",  "texture": "tiles_tall_grass",  "walkable": true,  "atlas_x": 0, "atlas_y": 0, "source_tile_px": 48 },
+    { "id": 30, "name": "tree_stump",  "texture": "tiles_tree_stump",  "walkable": false, "atlas_x": 0, "atlas_y": 0, "source_tile_px": 48 },
+    { "id": 31, "name": "wooden_logs", "texture": "tiles_wooden_logs", "walkable": false, "atlas_x": 0, "atlas_y": 0, "source_tile_px": 48 },
+
+    { "id": 32, "name": "grass_01",      "texture": "tiles_grass",      "walkable": true,  "atlas_x": 0, "atlas_y": 0, "source_tile_px": 48 },
+    { "id": 33, "name": "dirt_01",       "texture": "tiles_dirt",       "walkable": true,  "atlas_x": 0, "atlas_y": 0, "source_tile_px": 48 },
+    { "id": 34, "name": "coastlines_01", "texture": "tiles_coastlines", "walkable": false, "atlas_x": 0, "atlas_y": 0, "source_tile_px": 48 },
+    { "id": 35, "name": "forest_1_01",   "texture": "tiles_forest_1",   "walkable": true,  "atlas_x": 0, "atlas_y": 0, "source_tile_px": 48 },
+    { "id": 36, "name": "forest_2_01",   "texture": "tiles_forest_2",   "walkable": true,  "atlas_x": 0, "atlas_y": 0, "source_tile_px": 48 },
+    { "id": 37, "name": "forest_3_01",   "texture": "tiles_forest_3",   "walkable": true,  "atlas_x": 0, "atlas_y": 0, "source_tile_px": 48 },
+    { "id": 38, "name": "waterfall_01",  "texture": "tiles_waterfall",  "walkable": false, "atlas_x": 0, "atlas_y": 0, "source_tile_px": 48 },
+
+    { "id": 39, "name": "roads_01",       "texture": "tiles_roads",       "walkable": true, "atlas_x": 0, "atlas_y": 0, "source_tile_px": 48 },
+    { "id": 50, "name": "roads_stone_01", "texture": "tiles_roads_stone", "walkable": true, "atlas_x": 0, "atlas_y": 0, "source_tile_px": 48 },
+
+    { "id": 51, "name": "interior_01",        "texture": "tiles_interior",           "walkable": true, "atlas_x": 0, "atlas_y": 0, "source_tile_px": 48 },
+    { "id": 52, "name": "interior_alchemy_01","texture": "tiles_interior_alchemy",   "walkable": true, "atlas_x": 0, "atlas_y": 0, "source_tile_px": 48 },
+    { "id": 53, "name": "interior_bath_01",   "texture": "tiles_interior_bath",      "walkable": true, "atlas_x": 0, "atlas_y": 0, "source_tile_px": 48 },
+    { "id": 54, "name": "interior_bedroom_01","texture": "tiles_interior_bedroom",   "walkable": true, "atlas_x": 0, "atlas_y": 0, "source_tile_px": 48 },
+    { "id": 55, "name": "interior_clock_01",  "texture": "tiles_interior_clockwork", "walkable": true, "atlas_x": 0, "atlas_y": 0, "source_tile_px": 48 },
+    { "id": 56, "name": "interior_music_01",  "texture": "tiles_interior_music",     "walkable": true, "atlas_x": 0, "atlas_y": 0, "source_tile_px": 48 },
+    { "id": 57, "name": "interior_school_01", "texture": "tiles_interior_school",    "walkable": true, "atlas_x": 0, "atlas_y": 0, "source_tile_px": 48 },
+    { "id": 58, "name": "interior_work_01",   "texture": "tiles_interior_workshop",  "walkable": true, "atlas_x": 0, "atlas_y": 0, "source_tile_px": 48 },
+
+    { "id": 40, "name": "home_floor", "texture": "tiles_interior", "walkable": true,  "atlas_x": 6,  "atlas_y": 0, "source_tile_px": 48 },
+    { "id": 41, "name": "home_wall",  "texture": "tiles_interior", "walkable": false, "atlas_x": 13, "atlas_y": 0, "source_tile_px": 48 }
   ]
 }

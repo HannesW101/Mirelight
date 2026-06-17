@@ -25,6 +25,7 @@ namespace mirelight {
 // Forward declarations (2/2)
 // ----------------------------------------------------------------------------
 
+class Chunk;
 class Chunk_streamer;
 class Tile_database;
 
@@ -39,10 +40,14 @@ public:
 
     void render(Chunk_streamer const& streamer, titan::render::Renderer& renderer);
 
+    void render_chunk(Chunk const& chunk, int chunk_x, int chunk_y, titan::render::Renderer& renderer);
+
 private:
     Tile_database&                       _tiles;
     titan::resources::Resource_manager&  _resources;
     std::vector<sf::Sprite>              _sprite_buffer;
+
+    void _append_chunk(Chunk const& chunk, int base_tx, int base_ty);
 };
 
 } // namespace mirelight

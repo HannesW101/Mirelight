@@ -4,10 +4,12 @@
 // Includes
 // ----------------------------------------------------------------------------
 
+#include "world/walkable_provider.hpp"
+
 #include "SFML/System/Vector2.hpp"
 
 // ============================================================================
-// Forward declarations (1/2)
+// Forward declarations
 // ----------------------------------------------------------------------------
 
 namespace titan::game   { class World; class Game_object; }
@@ -20,12 +22,6 @@ namespace titan::render { class Camera; }
 namespace mirelight {
 
 // ============================================================================
-// Forward declarations (2/2)
-// ----------------------------------------------------------------------------
-
-class Chunk_streamer;
-
-// ============================================================================
 // Class Player_factory
 // ----------------------------------------------------------------------------
 
@@ -34,16 +30,16 @@ class Player_factory {
 public:
     Player_factory(
         titan::game::World& world,
-        Chunk_streamer const& streamer,
+        Walkable_provider const& walkable,
         titan::render::Camera& world_camera
         );
 
     titan::game::Game_object* create(sf::Vector2f position);
 
 private:
-    titan::game::World&    _world;
-    Chunk_streamer const&  _streamer;
-    titan::render::Camera& _camera;
+    titan::game::World&       _world;
+    Walkable_provider const&  _walkable;
+    titan::render::Camera&    _camera;
 };
 
 } // namespace mirelight
