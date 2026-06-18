@@ -127,12 +127,28 @@ void Player_controller::_apply_animation() {
 
 // ----------------------------------------------------------------------------
 bool Player_controller::_can_stand_at(
-    sf::Vector2f world_pos
+    sf::Vector2f center
     ) const {
 
-    int const tx = static_cast<int>(std::floor(world_pos.x / world_cfg::TILE_SIZE));
-    int const ty = static_cast<int>(std::floor(world_pos.y / world_cfg::TILE_SIZE));
-    return _walkable.is_walkable(tx, ty);
+    // Check all four corners of the collision box rather than just the center.
+    // HW/HH chosen so the player's feet stop at the tile boundary visually.
+    constexpr float HW = 10.0f;
+    constexpr float HH = 25.0f;
+
+    auto ok = [&](
+        float x,
+        float y
+        ) {
+
+        int const tx = static_cast<int>(std::floor(x / world_cfg::TILE_SIZE));
+        int const ty = static_cast<int>(std::floor(y / world_cfg::TILE_SIZE));
+        return _walkable.is_walkable(tx, ty);
+        };
+
+    return ok(center.x - HW, center.y - HH)
+        && ok(center.x + HW, center.y - HH)
+        && ok(center.x - HW, center.y + HH)
+        && ok(center.x + HW, center.y + HH);
 }
 
 // ----------------------------------------------------------------------------

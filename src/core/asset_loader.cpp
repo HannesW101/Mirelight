@@ -13,6 +13,9 @@
 #include "SFML/Audio/SoundBuffer.hpp"
 #include "SFML/Audio/Music.hpp"
 
+#include "nlohmann/json.hpp"
+
+#include <fstream>
 #include <string>
 #include <vector>
 
@@ -106,56 +109,39 @@ void Asset_loader::_load_fonts(
 }
 
 // ----------------------------------------------------------------------------
-void Asset_loader::_load_textures(
+void Asset_loader::_load_tile_textures(
     std::string const& dir
     ) {
 
-    // Tiles - nature
-    _tex(dir, "tiles_bush",             "textures/world/tiles/nature/Bush.png"        );
-    _tex(dir, "tiles_flower_1",         "textures/world/tiles/nature/Flower_1.png"    );
-    _tex(dir, "tiles_flower_2",         "textures/world/tiles/nature/Flower_2.png"    );
-    _tex(dir, "tiles_flower_3",         "textures/world/tiles/nature/Flower_3.png"    );
-    _tex(dir, "tiles_flower_4",         "textures/world/tiles/nature/Flower_4.png"    );
-    _tex(dir, "tiles_flower_5",         "textures/world/tiles/nature/Flower_5.png"    );
-    _tex(dir, "tiles_flower_6",         "textures/world/tiles/nature/Flower_6.png"    );
-    _tex(dir, "tiles_flower_7",         "textures/world/tiles/nature/Flower_7.png"    );
-    _tex(dir, "tiles_flower_8",         "textures/world/tiles/nature/Flower_8.png"    );
-    _tex(dir, "tiles_flower_9",         "textures/world/tiles/nature/Flower_9.png"    );
-    _tex(dir, "tiles_leaves_1",         "textures/world/tiles/nature/Leaves_1.png"    );
-    _tex(dir, "tiles_leaves_2",         "textures/world/tiles/nature/Leaves_2.png"    );
-    _tex(dir, "tiles_leaves_3",         "textures/world/tiles/nature/Leaves_3.png"    );
-    _tex(dir, "tiles_leaves_4",         "textures/world/tiles/nature/Leaves_4.png"    );
-    _tex(dir, "tiles_rock_1",           "textures/world/tiles/nature/Rock_1.png"      );
-    _tex(dir, "tiles_rock_2",           "textures/world/tiles/nature/Rock_2.png"      );
-    _tex(dir, "tiles_rock_3",           "textures/world/tiles/nature/Rock_3.png"      );
-    _tex(dir, "tiles_rock_4",           "textures/world/tiles/nature/Rock_4.png"      );
-    _tex(dir, "tiles_stone_tile",       "textures/world/tiles/nature/Stone tile.png"  );
-    _tex(dir, "tiles_tall_grass",       "textures/world/tiles/nature/Tall grass.png"  );
-    _tex(dir, "tiles_tree_stump",       "textures/world/tiles/nature/Tree stump.png"  );
-    _tex(dir, "tiles_wooden_logs",      "textures/world/tiles/nature/Wooden logs.png" );
+    std::ifstream f("data/tiles.json");
+    if (!f.is_open()) {
 
-    // Tiles - nature sheets
-    _tex(dir, "tiles_grass",       "textures/world/tiles/nature/Grass.png"                             );
-    _tex(dir, "tiles_dirt",        "textures/world/tiles/nature/Dirt.png"                              );
-    _tex(dir, "tiles_coastlines",  "textures/world/tiles/nature/Coastlines.png"                        );
-    _tex(dir, "tiles_forest_1",    "textures/world/tiles/nature/Forest tiles_1.png"                    );
-    _tex(dir, "tiles_forest_2",    "textures/world/tiles/nature/Forest tiles_2.png"                    );
-    _tex(dir, "tiles_forest_3",    "textures/world/tiles/nature/Forest tiles_3.png"                    );
-    _tex(dir, "tiles_waterfall",   "textures/world/tiles/nature/Waterfall tiles (48x48 - 5 frames).png");
+        LOG(Log_lvl::WARN) << "Asset_loader: could not open data/tiles.json — tile textures skipped";
+        return;
+    }
 
-    // Tiles - roads sheets
-    _tex(dir, "tiles_roads",       "textures/world/tiles/roads/Roads.png"      );
-    _tex(dir, "tiles_roads_stone", "textures/world/tiles/roads/Roads_stone.png");
+    nlohmann::json root;
+    try {
 
-    // Tiles - interior sheets
-    _tex(dir, "tiles_interior",           "textures/world/tiles/interior/Fantasy RPG Interior Pack (48x48 grid).png");
-    _tex(dir, "tiles_interior_alchemy",   "textures/world/tiles/interior/Expansion_AlchemyLab.png"                 );
-    _tex(dir, "tiles_interior_bath",      "textures/world/tiles/interior/Expansion_Bath.png"                       );
-    _tex(dir, "tiles_interior_bedroom",   "textures/world/tiles/interior/Expansion_Bedroom.png"                    );
-    _tex(dir, "tiles_interior_clockwork", "textures/world/tiles/interior/Expansion_ClockworkFactory.png"           );
-    _tex(dir, "tiles_interior_music",     "textures/world/tiles/interior/Expansion_Music.png"                      );
-    _tex(dir, "tiles_interior_school",    "textures/world/tiles/interior/Expansion_School.png"                     );
-    _tex(dir, "tiles_interior_workshop",  "textures/world/tiles/interior/Expansion_Workshop.png"                   );
+        f >> root;
+    } catch (nlohmann::json::exception const& e) {
+
+        LOG(Log_lvl::ERR) << std::string("Asset_loader: tiles.json parse error: ") + e.what();
+        return;
+    }
+
+    if (!root.contains("tile_textures")) { return; }
+
+    for (auto const& [key, path] : root["tile_textures"].items()) {
+
+        _tex(dir, key.c_str(), path.get<std::string>().c_str());
+    }
+}
+
+// ----------------------------------------------------------------------------
+void Asset_loader::_load_textures(
+    std::string const& dir
+    ) {
 
     // World objects
     _tex(dir, "tree_medium_1",         "textures/world/tiles/objects/Tree_medium_1.png"         );
@@ -219,6 +205,9 @@ void Asset_loader::_load_anims(
     _anim(dir, "player_fishing_cast",      "textures/world/entities/player/Beastmaster_fishing_cast.png"   );
     _anim(dir, "player_fishing_jerking",   "textures/world/entities/player/Beastmaster_fishing_jerking.png");
 
+    // NPCs
+    _anim(dir, "npc_wife_idle", "textures/world/entities/quest_giver/NPC 13_idle (48x72).png");
+
     // Player pet (Fox)
     _anim(dir, "pet_fox_idle",            "textures/world/entities/player_pet/Fox_idle.png"          );
     _anim(dir, "pet_fox_walk",            "textures/world/entities/player_pet/Fox_walk.png"          );
@@ -278,9 +267,10 @@ bool Asset_loader::load_all() {
 
     std::string const dir = ASSET_DIR;
 
-    _load_fonts   (dir);
-    _load_textures(dir);
-    _load_anims   (dir);
+    _load_fonts        (dir);
+    _load_tile_textures(dir);
+    _load_textures     (dir);
+    _load_anims        (dir);
     _load_sfx     (dir);
     _load_music   (dir);
 

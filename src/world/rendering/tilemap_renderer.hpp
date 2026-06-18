@@ -6,6 +6,7 @@
 
 #include "SFML/Graphics/Sprite.hpp"
 
+#include <memory>
 #include <vector>
 
 // ============================================================================
@@ -39,6 +40,12 @@ public:
     Tilemap_renderer(Tile_database& tiles, titan::resources::Resource_manager& resources);
 
     void render(Chunk_streamer const& streamer, titan::render::Renderer& renderer);
+
+    void render_grid(
+        std::vector<std::unique_ptr<Chunk>> const& chunks,
+        int chunk_cols,
+        titan::render::Renderer& renderer
+        );
 
     void render_chunk(Chunk const& chunk, int chunk_x, int chunk_y, titan::render::Renderer& renderer);
 

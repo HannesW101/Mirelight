@@ -1,4 +1,4 @@
-# home - chunk (0,0)  world cols 0-15, rows 0-15
+# home - chunk (4,0)  world cols 64-79, rows 0-15
 # tile legend:  0=empty  40=home_floor
 # rows 0-1 = north wall zone (empty, wall mesh renders here)
 # rows 2-15 = walkable floor

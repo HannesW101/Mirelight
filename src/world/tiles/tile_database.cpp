@@ -61,6 +61,10 @@ bool Tile_database::load(
         return false;
     }
 
+    // Hard cap: prevents a typo (e.g. id:9999999) from triggering a
+    // catastrophic vector resize that would crash or OOM.
+    constexpr Tile_id MAX_TILE_ID = 4095;
+
     for (auto const& entry : root["tiles"]) {
 
         Tile_def def;
@@ -71,8 +75,18 @@ bool Tile_database::load(
         def.atlas_x  = entry.value("atlas_x", 0);
         def.atlas_y  = entry.value("atlas_y", 0);
         def.source_tile_px = entry.value("source_tile_px", 32);
+        def.src_x    = entry.value("src_x", 0);
+        def.src_y    = entry.value("src_y", 0);
+        def.src_w    = entry.value("src_w", 0);
+        def.src_h    = entry.value("src_h", 0);
 
         if (def.id == 0) { continue; } // 0 reserved
+
+        if (def.id > MAX_TILE_ID) {
+
+            LOG(Log_lvl::ERR) << "Tile_database: id " + std::to_string(def.id) + " ('" + def.name + "') exceeds MAX_TILE_ID 4095, skipped";
+            continue;
+        }
 
         if (_defs.size() <= def.id) { _defs.resize(static_cast<std::size_t>(def.id) + 1u, _empty); }
         _defs[def.id] = def;

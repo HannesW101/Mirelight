@@ -13,6 +13,8 @@
 
 #include "SFML/Graphics/Texture.hpp"
 
+#include "world/chunks/chunk.hpp"
+
 #include <memory>
 
 // ============================================================================
@@ -64,24 +66,30 @@ void Tilemap_renderer::_append_chunk(
 
             sf::Sprite sprite(*texture);
 
-            int const src = def.source_tile_px;
-            sf::Vector2u const tex_size = texture->getSize();
-            if (tex_size.x > static_cast<unsigned>(src) ||
-                tex_size.y > static_cast<unsigned>(src)) {
+            if (def.src_w > 0) {
 
-                sprite.setTextureRect({
-                    { def.atlas_x * src, def.atlas_y * src },
-                    { src, src }
-                    });
-            }
+                // Direct pixel rect
+                sprite.setTextureRect({{def.src_x, def.src_y}, {def.src_w, def.src_h}});
+                float const sx = static_cast<float>(TS) / static_cast<float>(def.src_w);
+                float const sy = static_cast<float>(TS) / static_cast<float>(def.src_h);
+                sprite.setScale({sx, sy});
+            } else {
 
-            // Scale so every tile occupies exactly one logical world tile
-            // regardless of the source sheet's native pixel size
-            // (e.g. 48px authored art on a 32px world grid).
-            if (src != TS) {
+                // Atlas-based rect
+                int const src = def.source_tile_px;
+                sf::Vector2u const tex_size = texture->getSize();
+                if (tex_size.x > static_cast<unsigned>(src) ||
+                    tex_size.y > static_cast<unsigned>(src)
+                    ) {
 
-                float const s = static_cast<float>(TS) / static_cast<float>(src);
-                sprite.setScale({ s, s });
+                    sprite.setTextureRect({{def.atlas_x * src, def.atlas_y * src}, {src, src}});
+                }
+
+                if (src != TS) {
+
+                    float const s = static_cast<float>(TS) / static_cast<float>(src);
+                    sprite.setScale({s, s});
+                }
             }
 
             float const wx = static_cast<float>((base_tx + tx) * TS);
@@ -112,6 +120,30 @@ void Tilemap_renderer::render(
     }
 
     // Now submit references into the stable buffer
+    for (auto const& sprite : _sprite_buffer) {
+
+        renderer.submit(titan::render::Render_layer::WORLD_TILES, sprite);
+    }
+}
+
+// ----------------------------------------------------------------------------
+void Tilemap_renderer::render_grid(
+    std::vector<std::unique_ptr<Chunk>> const& chunks,
+    int chunk_cols,
+    titan::render::Renderer& renderer
+    ) {
+
+    _sprite_buffer.clear();
+    _sprite_buffer.reserve(chunks.size() * static_cast<std::size_t>(N * N));
+
+    for (int i = 0; i < static_cast<int>(chunks.size()); ++i) {
+
+        if (!chunks[i]) { continue; }
+        int const cx = i % chunk_cols;
+        int const cy = i / chunk_cols;
+        _append_chunk(*chunks[i], cx * N, cy * N);
+    }
+
     for (auto const& sprite : _sprite_buffer) {
 
         renderer.submit(titan::render::Render_layer::WORLD_TILES, sprite);

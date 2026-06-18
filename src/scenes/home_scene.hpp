@@ -10,10 +10,15 @@
 #include "world/tiles/tile_database.hpp"
 #include "world/chunks/chunk.hpp"
 #include "world/walkable_provider.hpp"
+#include "world/world_config.hpp"
 #include "world/areas/object_factory.hpp"
 #include "world/areas/object_spawner.hpp"
 
+#include "SFML/Graphics/VertexArray.hpp"
+#include "SFML/Graphics/Texture.hpp"
+
 #include <memory>
+#include <vector>
 
 // ============================================================================
 // Forward declarations (1/2)
@@ -48,19 +53,41 @@ class Game_session;
 class Room_walkable final : public Walkable_provider {
 
 public:
-    Room_walkable(Chunk const& room, Tile_database const& tiles) : _room(room), _tiles(tiles) {}
+    Room_walkable(
+        std::vector<std::unique_ptr<Chunk>> const& chunks,
+        Tile_database const& tiles,
+        int chunk_cols,
+        int chunk_rows
+        )
+        : _chunks(chunks)
+        , _tiles(tiles)
+        , _chunk_cols(chunk_cols)
+        , _chunk_rows(chunk_rows)
+    {}
 
     bool is_walkable(
         int world_tx,
         int world_ty
         ) const override {
 
-        return _tiles.by_id(_room.at(world_tx, world_ty)).walkable;
+        if (world_tx < 0 || world_ty < 0) { return false; }
+
+        constexpr int N = world_cfg::CHUNK_TILES;
+        int const cx = world_tx / N;
+        int const cy = world_ty / N;
+        if (cx >= _chunk_cols || cy >= _chunk_rows) { return false; }
+
+        int const idx = cy * _chunk_cols + cx;
+        if (idx >= static_cast<int>(_chunks.size()) || !_chunks[idx]) { return false; }
+
+        return _tiles.by_id(_chunks[idx]->at(world_tx % N, world_ty % N)).walkable;
     }
 
 private:
-    Chunk const& _room;
+    std::vector<std::unique_ptr<Chunk>> const& _chunks;
     Tile_database const& _tiles;
+    int _chunk_cols;
+    int _chunk_rows;
 };
 
 // ============================================================================
@@ -84,12 +111,17 @@ public:
     void fixed_update(float fixed_dt) override;
     void render(titan::render::Renderer& renderer) override;
 
+    // Chunk grid dimensions, if changed then
+    // add matching N_M.chunk files under data/areas/home/.
+    static constexpr int CHUNK_COLS = 4;
+    static constexpr int CHUNK_ROWS = 2;
+
 private:
     Game_session& _session;
 
     Tile_database                          _tiles;
-    Chunk                                  _room{ Chunk_coord{0, 0} };
-    Room_walkable                          _walkable{ _room, _tiles }; // must follow _room/_tiles
+    std::vector<std::unique_ptr<Chunk>>    _chunks;
+    Room_walkable                          _walkable{ _chunks, _tiles, CHUNK_COLS, CHUNK_ROWS };
     Object_factory                         _object_factory;
     std::unique_ptr<Object_spawner>        _spawner;
     std::unique_ptr<Tilemap_renderer>      _tilemap;
@@ -97,11 +129,15 @@ private:
     std::unique_ptr<Player_factory>        _player_factory;
     std::unique_ptr<titan::ui::UI_system>  _ui;
 
-    titan::game::Game_object* _player = nullptr;
+    titan::game::Game_object* _player       = nullptr;
+    titan::game::Game_object* _wife         = nullptr;
     std::uint64_t             _escape_cb_id = 0;
+    sf::VertexArray           _wall_mesh;
+    sf::Texture const*        _interior_tex = nullptr;
 
     void _register_escape();
     void _deregister_escape();
+    void _build_wall_mesh();
 };
 
 } // namespace mirelight

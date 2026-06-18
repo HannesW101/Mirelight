@@ -1,4 +1,46 @@
 {
+  "tile_textures": {
+    "tiles_bush":                   "textures/world/tiles/nature/Bush.png",
+    "tiles_flower_1":               "textures/world/tiles/nature/Flower_1.png",
+    "tiles_flower_2":               "textures/world/tiles/nature/Flower_2.png",
+    "tiles_flower_3":               "textures/world/tiles/nature/Flower_3.png",
+    "tiles_flower_4":               "textures/world/tiles/nature/Flower_4.png",
+    "tiles_flower_5":               "textures/world/tiles/nature/Flower_5.png",
+    "tiles_flower_6":               "textures/world/tiles/nature/Flower_6.png",
+    "tiles_flower_7":               "textures/world/tiles/nature/Flower_7.png",
+    "tiles_flower_8":               "textures/world/tiles/nature/Flower_8.png",
+    "tiles_flower_9":               "textures/world/tiles/nature/Flower_9.png",
+    "tiles_leaves_1":               "textures/world/tiles/nature/Leaves_1.png",
+    "tiles_leaves_2":               "textures/world/tiles/nature/Leaves_2.png",
+    "tiles_leaves_3":               "textures/world/tiles/nature/Leaves_3.png",
+    "tiles_leaves_4":               "textures/world/tiles/nature/Leaves_4.png",
+    "tiles_rock_1":                 "textures/world/tiles/nature/Rock_1.png",
+    "tiles_rock_2":                 "textures/world/tiles/nature/Rock_2.png",
+    "tiles_rock_3":                 "textures/world/tiles/nature/Rock_3.png",
+    "tiles_rock_4":                 "textures/world/tiles/nature/Rock_4.png",
+    "tiles_stone_tile":             "textures/world/tiles/nature/Stone tile.png",
+    "tiles_tall_grass":             "textures/world/tiles/nature/Tall grass.png",
+    "tiles_tree_stump":             "textures/world/tiles/nature/Tree stump.png",
+    "tiles_wooden_logs":            "textures/world/tiles/nature/Wooden logs.png",
+    "tiles_grass":                  "textures/world/tiles/nature/Grass.png",
+    "tiles_dirt":                   "textures/world/tiles/nature/Dirt.png",
+    "tiles_coastlines":             "textures/world/tiles/nature/Coastlines.png",
+    "tiles_forest_1":               "textures/world/tiles/nature/Forest tiles_1.png",
+    "tiles_forest_2":               "textures/world/tiles/nature/Forest tiles_2.png",
+    "tiles_forest_3":               "textures/world/tiles/nature/Forest tiles_3.png",
+    "tiles_waterfall":              "textures/world/tiles/nature/Waterfall tiles (48x48 - 5 frames).png",
+    "tiles_roads":                  "textures/world/tiles/roads/Roads.png",
+    "tiles_roads_stone":            "textures/world/tiles/roads/Roads_stone.png",
+    "tiles_interior":               "textures/world/tiles/interior/Fantasy RPG Interior Pack (48x48 grid).png",
+    "tiles_interior_alchemy":       "textures/world/tiles/interior/Expansion_AlchemyLab.png",
+    "tiles_interior_bath":          "textures/world/tiles/interior/Expansion_Bath.png",
+    "tiles_interior_bedroom":       "textures/world/tiles/interior/Expansion_Bedroom.png",
+    "tiles_interior_clockwork":     "textures/world/tiles/interior/Expansion_ClockworkFactory.png",
+    "tiles_interior_music":         "textures/world/tiles/interior/Expansion_Music.png",
+    "tiles_interior_school":        "textures/world/tiles/interior/Expansion_School.png",
+    "tiles_interior_workshop":      "textures/world/tiles/interior/Expansion_Workshop.png"
+  },
+
   "tiles": [
     { "id": 1, "name": "grass", "texture": "tiles_grass", "walkable": true,  "atlas_x": 0, "atlas_y": 0, "source_tile_px": 48 },
 
@@ -45,7 +87,7 @@
     { "id": 57, "name": "interior_school_01", "texture": "tiles_interior_school",    "walkable": true, "atlas_x": 0, "atlas_y": 0, "source_tile_px": 48 },
     { "id": 58, "name": "interior_work_01",   "texture": "tiles_interior_workshop",  "walkable": true, "atlas_x": 0, "atlas_y": 0, "source_tile_px": 48 },
 
-    { "id": 40, "name": "home_floor", "texture": "tiles_interior", "walkable": true,  "atlas_x": 6,  "atlas_y": 0, "source_tile_px": 48 },
-    { "id": 41, "name": "home_wall",  "texture": "tiles_interior", "walkable": false, "atlas_x": 13, "atlas_y": 0, "source_tile_px": 48 }
+    { "id": 40, "name": "home_floor", "texture": "tiles_interior", "walkable": true,
+      "src_x": 384, "src_y": 102, "src_w": 48, "src_h": 39 }
   ]
 }

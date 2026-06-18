@@ -5,9 +5,11 @@
 #include "world/chunks/chunk.hpp"
 
 #include "module-utils/include/random.hpp"
+#include "module-utils/include/logger.hpp"
 
 #include <fstream>
 #include <sstream>
+#include <string>
 
 // ============================================================================
 // Namespaces
@@ -97,14 +99,32 @@ bool Chunk::load_from_path(
     std::ifstream file(path);
     if (!file.is_open()) { return false; }
 
-    // Simple whitespace separated id grid
-    for (int i = 0; i < N * N; ++i) {
+    // Whitespace-separated id grid. Lines whose first non-whitespace
+    // character is '#' are treated as comments and skipped entirely,
+    // so chunk files can carry authoring notes, e.g.:
+    //
+    //   # home interior  (40=floor)
+    //   0  0  0  0 ...
+    //   40 40 40 ...
+    int i = 0;
+    std::string line;
+    while (i < N * N && std::getline(file, line)) {
+
+        std::istringstream iss(line);
+        char peek = 0;
+        while (iss.get(peek) && (peek == ' ' || peek == '\t')) {}
+        if (!iss || peek == '#') { continue; }
+        iss.putback(peek);
 
         int v = 0;
-        if (!(file >> v)) { v = default_tile; }
+        while (i < N * N && iss >> v) {
 
-        _tiles[static_cast<std::size_t>(i)] = static_cast<Tile_id>(v);
+            _tiles[static_cast<std::size_t>(i++)] = static_cast<Tile_id>(v);
+        }
     }
+
+    // Any tiles not covered by the file keep the default
+    for (; i < N * N; ++i) { _tiles[static_cast<std::size_t>(i)] = default_tile; }
 
     return true;
 }
@@ -114,8 +134,11 @@ void Chunk::_generate(
     Tile_id default_tile
     ) {
 
-    // No authored file: fill with the default tile
-    // so the world is always walkable
+    LOG(titan::utils::Log_lvl::WARN)
+        << "Chunk (" + std::to_string(_coord.x) + "," + std::to_string(_coord.y)
+        + "): no authored .chunk file found, filling with default tile id "
+        + std::to_string(default_tile);
+
     _tiles.fill(default_tile);
 }
 

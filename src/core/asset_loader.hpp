@@ -35,11 +35,12 @@ private:
     titan::resources::Resource_manager& _resources;
     std::vector<std::shared_ptr<void>>  _handles;
 
-    void _load_fonts   (std::string const& dir);
-    void _load_textures(std::string const& dir);
-    void _load_anims   (std::string const& dir);
-    void _load_sfx     (std::string const& dir);
-    void _load_music   (std::string const& dir);
+    void _load_fonts        (std::string const& dir);
+    void _load_tile_textures(std::string const& dir);
+    void _load_textures     (std::string const& dir);
+    void _load_anims        (std::string const& dir);
+    void _load_sfx          (std::string const& dir);
+    void _load_music        (std::string const& dir);
 
     void _tex(std::string const& dir, char const* key, char const* rel_path);
 

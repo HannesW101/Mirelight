@@ -5,6 +5,7 @@
 // ----------------------------------------------------------------------------
 
 #include "module-scene/include/scene.hpp"
+#include "ui/cursor_manager.hpp"
 
 #include <memory>
 
@@ -37,6 +38,7 @@ public:
     ~Pause_scene() override;
 
     void on_enter() override;
+    void on_exit()  override;
     void update(float dt) override;
     void render(titan::render::Renderer& renderer) override;
 
@@ -44,6 +46,7 @@ private:
     Game_session& _session;
 
     std::unique_ptr<titan::ui::UI_system> _ui;
+    Cursor_manager                        _cursor;
 };
 
 } // namespace mirelight

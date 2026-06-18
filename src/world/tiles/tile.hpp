@@ -31,7 +31,15 @@ struct Tile_def {
     bool        walkable = true;
     int         atlas_x = 0;
     int         atlas_y = 0;
-    int         source_tile_px = 32; // native pixel size of one cell in texture's sheet
+    int         source_tile_px = 32;
+
+    // Optional direct pixel rect: overrides atlas_x/y when src_w > 0.
+    // Use when the source tile is not on the sheet's regular grid
+    // (e.g. non-square, non-aligned, or odd-sized art).
+    int src_x = 0;
+    int src_y = 0;
+    int src_w = 0;
+    int src_h = 0;
 };
 
 } // namespace mirelight
