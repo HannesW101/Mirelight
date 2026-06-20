@@ -9,7 +9,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 include(FetchContent)
 FetchContent_Declare(Titan
     GIT_REPOSITORY https://github.com/HannesW101/Titan
-    GIT_TAG        v1.2.0)
+    GIT_TAG        v1.2.1)
 FetchContent_MakeAvailable(Titan)
 
 # ----------------------------------------------------------------------------

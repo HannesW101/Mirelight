@@ -17,6 +17,7 @@
 #include "SFML/Graphics/VertexArray.hpp"
 #include "SFML/Graphics/Texture.hpp"
 
+#include <cstdint>
 #include <memory>
 #include <vector>
 
@@ -129,15 +130,19 @@ private:
     std::unique_ptr<Player_factory>        _player_factory;
     std::unique_ptr<titan::ui::UI_system>  _ui;
 
-    titan::game::Game_object* _player       = nullptr;
-    titan::game::Game_object* _wife         = nullptr;
-    std::uint64_t             _escape_cb_id = 0;
-    sf::VertexArray           _wall_mesh;
-    sf::Texture const*        _interior_tex = nullptr;
+    titan::game::Game_object* _player = nullptr;
+    titan::game::Game_object* _wife   = nullptr;
+    std::uint64_t _escape_cb_id = 0;
+    std::uint64_t _rmb_cb_id    = 0;
+    sf::VertexArray    _wall_mesh;
+    sf::Texture const* _interior_tex = nullptr;
 
     void _register_escape();
     void _deregister_escape();
+    void _register_rmb();
+    void _deregister_rmb();
     void _build_wall_mesh();
+    void _spawn_quest_indicator();
 };
 
 } // namespace mirelight

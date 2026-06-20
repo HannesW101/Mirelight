@@ -26,6 +26,7 @@ inline constexpr sf::Color CLEAR_COLOR   = sf::Color( 20,  24,  28);
 inline constexpr sf::Color BTN_TEXT      = sf::Color( 40,  15,   5);
 inline constexpr sf::Color PRESSED_TINT  = sf::Color(200, 185, 160);
 inline constexpr sf::Color DISABLED_TINT = sf::Color(160, 160, 160, 120);
+inline constexpr sf::Color SCROLL_THUMB_COLOR  = sf::Color(210, 170, 90, 210);
 
 // ---- Depth -----------------------------------------------------------------
 inline constexpr float BG_DEPTH = -1000.0f;
@@ -50,8 +51,12 @@ inline titan::ui::Theme mirelight_theme() {
         sf::Color(BTN_TEXT.r, BTN_TEXT.g, BTN_TEXT.b, DISABLED_TINT.a)
         });
 
+    Visual_set thumb;
+    thumb.normal(Visual::color(SCROLL_THUMB_COLOR));
+
     Theme theme;
     theme.set("button", btn);
+    theme.set("scroll_thumb", thumb);
     return theme;
 }
 

@@ -168,6 +168,23 @@ void Asset_loader::_load_textures(
     _tex(dir, "cursor_gauntlet", "textures/ui/cursors/Gauntlet.png"           );
     _tex(dir, "cursor_magic",    "textures/ui/cursors/Gauntlet_Magic.png"     );
 
+    // Quest panel
+    _tex(dir, "bg_box_quest", "textures/ui/panels/BGbox_02A.png");
+
+    // Quest indicators
+    _tex(dir, "quest_side_avail", "textures/ui/icons/231.png");
+    _tex(dir, "quest_side_ready", "textures/ui/icons/232.png");
+    _tex(dir, "quest_main_avail", "textures/ui/icons/238.png");
+    _tex(dir, "quest_main_ready", "textures/ui/icons/239.png");
+
+    // Quest reward icons
+    _tex(dir, "icon_reward",  "textures/ui/icons/55.png");
+    _tex(dir, "icon_gold_1",  "textures/ui/icons/91.png");
+    _tex(dir, "icon_gold_2",  "textures/ui/icons/92.png");
+    _tex(dir, "icon_gold_3",  "textures/ui/icons/93.png");
+    _tex(dir, "icon_gold_4",  "textures/ui/icons/94.png");
+    _tex(dir, "icon_gold_5",  "textures/ui/icons/95.png");
+
     // Backgrounds
     _tex(dir, "mountains_bg", "textures/backgrounds/mountains.png");
 }

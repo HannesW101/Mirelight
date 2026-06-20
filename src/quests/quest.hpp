@@ -1,10 +1,11 @@
+#pragma once
+
 // ============================================================================
 // Includes
 // ----------------------------------------------------------------------------
 
-#include "world/areas/game_session.hpp"
-
-#include <utility>
+#include <string>
+#include <vector>
 
 // ============================================================================
 // Namespaces
@@ -13,40 +14,47 @@
 namespace mirelight {
 
 // ============================================================================
-// Class Game_session
+// Enums
 // ----------------------------------------------------------------------------
 
 // ----------------------------------------------------------------------------
-Game_session::Game_session(
-    std::string save_dir
-    )
-    : _save_dir(std::move(save_dir))
-{}
+enum class Quest_type  {
+
+    SIDE,
+    MAIN
+};
 
 // ----------------------------------------------------------------------------
-void Game_session::update(
-    float dt
-    ) {
+enum class Quest_state {
+    LOCKED,
+    AVAILABLE,
+    ACTIVE,
+    READY_TO_HAND_IN,
+    COMPLETED
+};
 
-    _world_time_seconds += static_cast<double>(dt);
-}
+// ============================================================================
+// Structs
+// ----------------------------------------------------------------------------
 
 // ----------------------------------------------------------------------------
-double Game_session::world_time() const { return _world_time_seconds; }
+struct Quest_reward {
+
+    std::string type;
+    std::string name;
+    int         count = 1;
+};
 
 // ----------------------------------------------------------------------------
-Area_state_store& Game_session::state_store() { return _store; }
-
-// ----------------------------------------------------------------------------
-Area_state_store const& Game_session::state_store() const { return _store; }
-
-// ----------------------------------------------------------------------------
-Quest_tracker& Game_session::quests() { return _quests; }
-
-// ----------------------------------------------------------------------------
-Quest_tracker const& Game_session::quests() const { return _quests; }
-
-// ----------------------------------------------------------------------------
-std::string const& Game_session::save_dir() const { return _save_dir; }
+struct Quest {
+    int                       id           = -1;
+    int                       prerequisite = -1;  // -1 = always available
+    Quest_type                type         = Quest_type::SIDE;
+    std::string               npc;
+    std::string               title;
+    std::string               description;
+    std::string               hand_in_text;
+    std::vector<Quest_reward> rewards;
+};
 
 } // namespace mirelight

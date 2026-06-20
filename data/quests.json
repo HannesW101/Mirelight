@@ -1,0 +1,67 @@
+{
+  "quests": [
+    {
+      "id": 1,
+      "type": "side",
+      "npc": "wife",
+      "prerequisite": -1,
+      "title": "Morning Chores",
+      "description": "Your wife needs help with the morning chores around the house. She hands you a small list of things to gather.",
+      "hand_in_text": "Thank you so much! This will really help us get through the morning. You're the best.",
+      "rewards": [
+        { "type": "item", "name": "Fresh Bread", "count": 3 },
+        { "type": "gold", "count": 5 }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "side",
+      "npc": "wife",
+      "prerequisite": 1,
+      "title": "Gather Firewood",
+      "description": "The nights are getting cold. Your wife asks you to venture into the forest and gather firewood before sundown.",
+      "hand_in_text": "Perfect! That should keep us warm tonight. I'll get the fire going straight away.",
+      "rewards": [
+        { "type": "gold", "count": 15 }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "side",
+      "npc": "wife",
+      "prerequisite": 2,
+      "title": "A Special Dinner",
+      "description": "Your wife wants to cook a special dinner tonight. She needs you to find some rare herbs from the meadow.",
+      "hand_in_text": "These are perfect! Dinner will be wonderful tonight. Sit down and rest — you've earned it.",
+      "rewards": [
+        { "type": "item", "name": "Cooked Meal",  "count": 1 },
+        { "type": "skill", "name": "Herbalism",   "count": 1 }
+      ]
+    },
+    {
+      "id": 101,
+      "type": "main",
+      "npc": "wife",
+      "prerequisite": -1,
+      "title": "A Hunter's Calling",
+      "description": "Strange creatures have been seen near the forest edge. The village elder has requested your help. Your wife urges you to speak with him.",
+      "hand_in_text": "I knew you'd answer the call. Be careful out there — come back safe.",
+      "rewards": [
+        { "type": "skill", "name": "Animal Tracking", "count": 1 }
+      ]
+    },
+    {
+      "id": 5,
+      "type": "side",
+      "npc": "wife",
+      "prerequisite": 3,
+      "title": "The Long Road to the Market",
+      "description": "It has been many weeks since we last made the journey to the market in Thornwall. The roads are longer now that the bridge washed out — you will need to travel east through the Ashwood, past the old mill, and follow the river south until you reach the crossing at Millhaven. From there it is another half-day on foot.\n\nWe need salt, dried herbs, a new whetstone for your blade, and thread for the loom. The merchant Aldric usually sets up near the south gate — he is reliable and fair, but he keeps odd hours, so arrive before midday or you will find his stall shuttered.\n\nTake care on the road. There have been reports of wolves near the Ashwood trail and some travellers have spoken of a cloaked figure watching the path at dusk. I would not worry too much, but stay alert and keep your blade ready. Come home safe.",
+      "hand_in_text": "You made it back! I was beginning to worry — the roads are so unpredictable these days. Everything looks perfect. We will be well stocked for the season. Rest now, you have earned it.",
+      "rewards": [
+        { "type": "item", "name": "Traveller's Pack", "count": 1 },
+        { "type": "gold", "count": 30 }
+      ]
+    }
+  ]
+}

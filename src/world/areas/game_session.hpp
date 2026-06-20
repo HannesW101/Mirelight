@@ -5,6 +5,7 @@
 // ----------------------------------------------------------------------------
 
 #include "world/areas/area_state.hpp"
+#include "quests/quest_tracker.hpp"
 
 #include <string>
 
@@ -30,12 +31,16 @@ public:
     Area_state_store& state_store();
     Area_state_store const& state_store() const;
 
+    Quest_tracker&       quests();
+    Quest_tracker const& quests() const;
+
     std::string const& save_dir() const;
 
 private:
     Area_state_store _store;
-    std::string       _save_dir;
-    double            _world_time_seconds = 0.0;
+    Quest_tracker    _quests;
+    std::string      _save_dir;
+    double           _world_time_seconds = 0.0;
 };
 
 } // namespace mirelight
