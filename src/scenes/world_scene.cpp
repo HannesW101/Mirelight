@@ -31,6 +31,7 @@
 #include "module-audio/include/audio_system.hpp"
 #include "module-audio/include/audio_bus.hpp"
 
+
 #include "module-core/events/include/sfml_event_manager.hpp"
 #include "module-core/events/include/event_type.hpp"
 
@@ -112,7 +113,11 @@ void World_scene::on_enter() {
     _streamer->update(start);
     _player = _player_factory->create(start);
 
-    application().audio().music().crossfade_to("music_ambient_2", 2.0f, true);
+    application().audio().music().crossfade_to("music_ambient_2", 2.0f, false);
+
+    _cursor.load(application().resources());
+    _is_top = true;
+    application().renderer().window().setMouseCursorVisible(false);
 
     _ui = std::make_unique<UI_system>(application());
     auto coords = std::make_unique<Label>("hud_coords");
@@ -128,18 +133,22 @@ void World_scene::on_enter() {
 // ----------------------------------------------------------------------------
 void World_scene::on_exit() {
 
+    _is_top = false;
     _deregister_escape();
 }
 
 // ----------------------------------------------------------------------------
 void World_scene::on_pause() {
 
+    _is_top = false;
     _deregister_escape();
 }
 
 // ----------------------------------------------------------------------------
 void World_scene::on_resume() {
 
+    _is_top = true;
+    application().renderer().window().setMouseCursorVisible(false);
     _register_escape();
 }
 
@@ -175,6 +184,8 @@ void World_scene::update(
     }
 
     _ui->update(dt);
+
+    if (_is_top) { _cursor.update_from_world(*_world, application().renderer()); }
 }
 
 // ----------------------------------------------------------------------------
@@ -185,6 +196,7 @@ void World_scene::render(
     if (_tilemap && _streamer) { _tilemap->render(*_streamer, renderer); }
     if (_world) { _world->render(renderer); }
     if (_ui) { _ui->render(); }
+    if (_is_top) { _cursor.render(renderer); }
 }
 
 } // namespace mirelight

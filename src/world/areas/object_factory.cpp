@@ -105,9 +105,9 @@ Game_object* spawn_decoration(
                 obj->transform().set_scale(target_w / static_cast<float>(sz.x), target_h / static_cast<float>(sz.y));
             }
         }
-    } catch (std::exception const&) {
+    } catch (std::exception const& e) {
 
-
+        LOG(Log_lvl::WARN) << std::string("Object_factory: could not read texture size for '") + entry.variant + "': " + e.what();
     }
 
     obj->add_component<Respawn_timer>(area, entry.spawn_id, entry.respawn_seconds, store, session);

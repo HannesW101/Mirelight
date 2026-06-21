@@ -9,6 +9,7 @@
 
 #include "world/tiles/tile_database.hpp"
 #include "world/areas/object_factory.hpp"
+#include "ui/cursor_manager.hpp"
 
 #include <memory>
 
@@ -70,6 +71,8 @@ private:
 
     titan::game::Game_object* _player = nullptr;
     std::uint64_t             _escape_cb_id = 0;
+    Cursor_manager            _cursor;
+    bool                      _is_top = false;
 
     void _register_escape();
     void _deregister_escape();

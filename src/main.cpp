@@ -4,6 +4,7 @@
 
 #include "scenes/menu_scene.hpp"
 #include "core/asset_loader.hpp"
+#include "core/ambient_music_controller.hpp"
 #include "ui/ui_style.hpp"
 #include "world/areas/game_session.hpp"
 
@@ -64,8 +65,9 @@ int main() {
     Asset_loader loader(resources::Resource_manager::instance());
     loader.load_all();
 
-    scene::Scene_manager scenes;
-    Game_session session;
+    scene::Scene_manager          scenes;
+    Game_session                  session;
+    Ambient_music_controller      ambient_music;
 
     app.set_on_start([&] {
         scenes.attach(app);
@@ -85,7 +87,7 @@ int main() {
         });
 
     app.set_fixed_update([&](float dt) { scenes.fixed_update(dt); });
-    app.set_update([&](float dt) { session.update(dt); scenes.update(dt); });
+    app.set_update([&](float dt) { session.update(dt); ambient_music.update(dt, app.audio()); scenes.update(dt); });
     app.set_render([&](render::Renderer& r) { scenes.render(r); });
 
     return app.run();

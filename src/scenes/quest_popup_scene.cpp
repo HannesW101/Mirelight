@@ -225,7 +225,7 @@ void Quest_popup_scene::on_enter() {
                 reward_text = std::to_string(r.count) + " Gold";
             } else if (r.type == "skill") {
 
-                reward_text = r.name + "";
+                reward_text = r.name;
             } else {
 
                 reward_text = r.name + " x" + std::to_string(r.count);
@@ -319,8 +319,8 @@ void Quest_popup_scene::on_enter() {
 // ----------------------------------------------------------------------------
 void Quest_popup_scene::on_exit() {
 
-    if (_escape_cb_id != 0)
-     {
+    if (_escape_cb_id != 0) {
+
         SFML_event_manager::instance().deregister_callback(_escape_cb_id);
         _escape_cb_id = 0;
     }
@@ -342,7 +342,7 @@ void Quest_popup_scene::update(
         if (w && w->is_hovered()) { any_hovered = true; break; }
     }
 
-    Cursor_mode const mode = any_hovered ? Cursor_mode::HOVER : Cursor_mode::DEFAULT;
+    Cursor_mode const mode = any_hovered ? Cursor_mode::GAUNTLET_MAGIC : Cursor_mode::GAUNTLET;
     if (_cursor.set_mode(mode)) {
 
         application().audio().play_sfx("sfx_ui_hover", Audio_bus::UI);

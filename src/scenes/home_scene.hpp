@@ -6,6 +6,7 @@
 
 #include "module-scene/include/scene.hpp"
 #include "module-core/events/include/event_listener.hpp"
+#include "ui/cursor_manager.hpp"
 
 #include "world/tiles/tile_database.hpp"
 #include "world/chunks/chunk.hpp"
@@ -133,6 +134,8 @@ private:
     titan::game::Game_object* _player = nullptr;
     titan::game::Game_object* _wife   = nullptr;
     std::uint64_t _escape_cb_id = 0;
+    Cursor_manager _cursor;
+    bool           _is_top = false;
     std::uint64_t _rmb_cb_id    = 0;
     sf::VertexArray    _wall_mesh;
     sf::Texture const* _interior_tex = nullptr;

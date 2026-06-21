@@ -43,11 +43,11 @@ public:
     void destroy_now();
 
 private:
-    Area_id              _area;
-    std::string          _spawn_id;
-    double                _respawn_seconds;
-    Area_state_store&    _store;
-    Game_session const&  _session;
+    Area_id             _area;
+    std::string         _spawn_id;
+    double              _respawn_seconds;
+    Area_state_store&   _store;
+    Game_session const& _session;
 };
 
 } // namespace mirelight

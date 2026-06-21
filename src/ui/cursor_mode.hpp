@@ -4,17 +4,20 @@
 // Namespaces
 // ----------------------------------------------------------------------------
 
-namespace mirelight::entity_cfg {
+namespace mirelight {
 
 // ============================================================================
-// Constants
+// Enum Cursor_mode
 // ----------------------------------------------------------------------------
 
-inline constexpr float ANIM_FPS = 8.0f;
+enum class Cursor_mode {
 
-// Half-extents of the player's tile-collision box (feet region).
-// Chosen so the player visually stops at tile boundaries.
-inline constexpr float COLLISION_HW = 10.0f;
-inline constexpr float COLLISION_HH = 25.0f;
+    GAUNTLET, // default in-game
+    INSPECT, // chest, pickup, interactable item
+    TRADE, // merchant NPC
+    DIALOG, // quest-giver NPC
+    ATTACK, // attackable enemy
+    GAUNTLET_MAGIC // hovering over a UI element
+};
 
-} // namespace mirelight::entity_cfg
+} // namespace mirelight

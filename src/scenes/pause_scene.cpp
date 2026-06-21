@@ -154,7 +154,7 @@ void Pause_scene::update(
             if (w && w->is_hovered()) { any_hovered = true; break; }
         }
 
-        Cursor_mode const new_mode = any_hovered ? Cursor_mode::HOVER : Cursor_mode::DEFAULT;
+        Cursor_mode const new_mode = any_hovered ? Cursor_mode::GAUNTLET_MAGIC : Cursor_mode::GAUNTLET;
 
         if (_cursor.set_mode(new_mode)) {
 

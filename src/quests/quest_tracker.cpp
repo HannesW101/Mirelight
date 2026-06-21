@@ -116,6 +116,19 @@ Quest const* Quest_tracker::available_for(
 }
 
 // ----------------------------------------------------------------------------
+Quest const* Quest_tracker::active_for(
+    std::string const& npc
+    ) const {
+
+    for (auto const& q : _quests) {
+
+        if (q.npc == npc && state(q.id) == Quest_state::ACTIVE) { return &q; }
+    }
+
+    return nullptr;
+}
+
+// ----------------------------------------------------------------------------
 Quest const* Quest_tracker::ready_for(
     std::string const& npc
     ) const {
@@ -136,8 +149,7 @@ void Quest_tracker::accept(
     auto it = _states.find(quest_id);
     if (it == _states.end() || it->second != Quest_state::AVAILABLE) { return; }
 
-    // Temporary for testing
-    it->second = Quest_state::READY_TO_HAND_IN;
+    it->second = Quest_state::ACTIVE;
 }
 
 // ----------------------------------------------------------------------------

@@ -165,8 +165,12 @@ void Asset_loader::_load_textures(
     _tex(dir, "btn_selected",    "textures/ui/buttons/Button_03A_Selected.png");
     _tex(dir, "bg_box",          "textures/ui/panels/BGbox_03A.png"           );
     _tex(dir, "banner_02c",      "textures/ui/banners/BannerMedium_02C.png"   );
-    _tex(dir, "cursor_gauntlet", "textures/ui/cursors/Gauntlet.png"           );
-    _tex(dir, "cursor_magic",    "textures/ui/cursors/Gauntlet_Magic.png"     );
+    _tex(dir, "cursor_gauntlet", "textures/ui/cursors/Gauntlet.png"        );
+    _tex(dir, "cursor_magic",   "textures/ui/cursors/Gauntlet_Magic.png"  );
+    _tex(dir, "cursor_attack",  "textures/ui/cursors/Command_Attack.png"  );
+    _tex(dir, "cursor_dialog",  "textures/ui/cursors/Command_Dialog.png"  );
+    _tex(dir, "cursor_inspect", "textures/ui/cursors/Command_Inspect.png" );
+    _tex(dir, "cursor_trade",   "textures/ui/cursors/Command_Trade.png"   );
 
     // Quest panel
     _tex(dir, "bg_box_quest", "textures/ui/panels/BGbox_02A.png");

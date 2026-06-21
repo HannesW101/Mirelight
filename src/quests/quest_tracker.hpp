@@ -29,6 +29,7 @@ public:
     Quest const* quest(int quest_id) const;
 
     Quest const* available_for(std::string const& npc) const;
+    Quest const* active_for   (std::string const& npc) const;
     Quest const* ready_for    (std::string const& npc) const;
 
     void accept  (int quest_id);

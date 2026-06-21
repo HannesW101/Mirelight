@@ -12,6 +12,7 @@
 #include "module-core/events/include/sfml_event_manager.hpp"
 #include "module-core/events/include/event_type.hpp"
 
+#include "entities/entity_config.hpp"
 #include "module-utils/include/math.hpp"
 
 #include <array>
@@ -65,7 +66,7 @@ constexpr std::array<Directional_clip, 2> ANIM_TABLE = {{
 
 // ============================================================================
 // Class Player_controller
-// ============================================================================
+// ----------------------------------------------------------------------------
 
 // ----------------------------------------------------------------------------
 Player_controller::Player_controller(
@@ -130,10 +131,9 @@ bool Player_controller::_can_stand_at(
     sf::Vector2f center
     ) const {
 
-    // Check all four corners of the collision box rather than just the center.
-    // HW/HH chosen so the player's feet stop at the tile boundary visually.
-    constexpr float HW = 10.0f;
-    constexpr float HH = 25.0f;
+    // Check all four corners of the player's collision box (feet region).
+    constexpr float HW = entity_cfg::COLLISION_HW;
+    constexpr float HH = entity_cfg::COLLISION_HH;
 
     auto ok = [&](
         float x,

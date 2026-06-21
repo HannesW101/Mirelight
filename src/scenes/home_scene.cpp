@@ -38,6 +38,8 @@
 #include "module-audio/include/audio_system.hpp"
 #include "module-audio/include/audio_bus.hpp"
 
+#include "entities/components/cursor_hint.hpp"
+
 #include "module-core/events/include/sfml_event_manager.hpp"
 #include "module-core/events/include/event_type.hpp"
 
@@ -143,7 +145,10 @@ void Home_scene::_register_rmb() {
             Quest const* q = _session.quests().ready_for(WIFE_ID);
             if (!q) { q = _session.quests().available_for(WIFE_ID); }
 
-            if (q) { scenes().push(std::make_unique<Quest_popup_scene>(_session, q->id)); }
+            if (q) {
+                application().audio().play_sfx("sfx_ui_click", titan::audio::Audio_bus::UI);
+                scenes().push(std::make_unique<Quest_popup_scene>(_session, q->id));
+            }
         },
         listener_id()
         );
@@ -302,6 +307,12 @@ void Home_scene::on_enter() {
         auto* anim = _wife->add_component<Animator>();
         register_wife_animations(*anim);
         anim->play("idle_front");
+
+        auto* hint = _wife->add_component<Cursor_hint>(Cursor_mode::DIALOG);
+        hint->set_condition([this] {
+            return _session.quests().available_for(WIFE_ID) != nullptr
+                || _session.quests().ready_for(WIFE_ID)    != nullptr;
+        });
     }
 
     _session.quests().load(data_dir + "/quests.json");
@@ -310,8 +321,11 @@ void Home_scene::on_enter() {
     sf::Vector2f const start{32.0f * world_cfg::TILE_SIZE, 15.0f * world_cfg::TILE_SIZE};
     _player = _player_factory->create(start);
 
-    application().audio().music().crossfade_to("music_ambient_2", 2.0f, true);
+    application().audio().music().crossfade_to("music_ambient_2", 2.0f, false);
 
+    _cursor.load(application().resources());
+    _is_top = true;
+    application().renderer().window().setMouseCursorVisible(false);
     _ui = std::make_unique<UI_system>(application());
 
     _register_escape();
@@ -321,6 +335,7 @@ void Home_scene::on_enter() {
 // ----------------------------------------------------------------------------
 void Home_scene::on_exit() {
 
+    _is_top = false;
     _deregister_escape();
     _deregister_rmb();
 
@@ -330,6 +345,7 @@ void Home_scene::on_exit() {
 // ----------------------------------------------------------------------------
 void Home_scene::on_pause() {
 
+    _is_top = false;
     _deregister_escape();
     _deregister_rmb();
 }
@@ -337,6 +353,8 @@ void Home_scene::on_pause() {
 // ----------------------------------------------------------------------------
 void Home_scene::on_resume() {
 
+    _is_top = true;
+    application().renderer().window().setMouseCursorVisible(false);
     _register_escape();
     _register_rmb();
 }
@@ -360,6 +378,8 @@ void Home_scene::update(
     application().renderer().world_camera().tick(dt);
 
     if (_ui) { _ui->update(dt); }
+
+    if (_is_top) { _cursor.update_from_world(*_world, application().renderer()); }
 }
 
 // ----------------------------------------------------------------------------
@@ -378,6 +398,7 @@ void Home_scene::render(
     }
 
     if (_ui) { _ui->render(); }
+    if (_is_top) { _cursor.render(renderer); }
 }
 
 } // namespace mirelight
